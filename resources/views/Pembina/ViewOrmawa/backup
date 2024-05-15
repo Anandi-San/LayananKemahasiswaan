@@ -1,0 +1,125 @@
+@extends('Pembina.Components.layout')
+<title>Pembina</title>
+
+@section('content')
+    <div class="container mx-auto md:ml-36 md:mt-16 mt-8">
+        @foreach ($ormawas as $ormawa)
+        {{-- @php
+                dd($ormawa);
+        @endphp --}}
+            <div class="ormawa-card mb-8">
+                <div class="ormawa-header flex items-center mb-4">
+                    <div class="w-40 h-40 md:w-auto md:h-auto rounded-full overflow-hidden">
+                        <img class="object-center object-cover w-full h-full" src="{{ $ormawa->logo_ormawa }}" alt="{{ $ormawa->name }}">
+                    </div>
+                    <div class="md:ml-4 mt-4 md:mt-0">
+                        <p class="font-bold text-2xl text-customBlack">{{ $ormawa->nama_ormawa }}</p>
+                        <p class="text-xl text-customBlack">{{ $ormawa->singkatan }}</p>
+                    </div>
+                </div>
+                
+                <hr class="w-full border-black my-4 mx-auto md:w-11/12">
+                
+                @if($ormawa->pengurusOrmawa->count() > 0)
+            <div class="ormawa-vision mb-4">
+                <p class="font-bold text-xl">Visi</p>
+                <p class="text-customBlack">{{ $ormawa->pengurusOrmawa->first()->visi }}</p>
+            </div>
+
+            <div class="ormawa-mission mb-4">
+                <p class="font-bold text-xl">Misi</p>
+                <ol class="list-decimal pl-4">
+                    <li>{{ $ormawa->pengurusOrmawa->first()->misi }}</li>
+                </ol>
+            </div>
+        @endif
+                </div>
+
+                <div class="ormawa-stats flex flex-col md:flex-row justify-center md:space-x-48 mt-8">
+                    <div class="flex flex-col w-72 mb-8">
+                        <a href="#" class="stat-card flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center">
+                            <i class="fa-solid fa-money-bill-1 fa-4x mr-2 mb-1 text-customBlue"></i>
+                            <p class="text-xl text-customBlack mb-1 font-semibold">RP. {{ number_format($ormawa->saldo, 2) }}</p>
+                            <p class="text-customBlue">Saldo</p>
+                        </a>
+                        <a href="#" class="stat-card flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center mt-4">
+                            <i class="fa-solid fa-arrow-up fa-4x mr-2 mb-1 text-customBlue "></i>
+                            <p class="text-xl text-customBlack font-semibold mb-1">RP. {{ number_format($ormawa->dana_terpakai, 2) }}</p>
+                            <p class="text-customBlue">Dana Terpakai</p>
+                        </a>
+                    </div>
+
+                    <div class="flex flex-col w-72 mb-8">
+                        <a href="#" class="stat-card flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center">
+                            <i class="fa-solid fa-chart-line fa-4x mr-2 mb-1 text-customBlue"></i>
+                            <p class="text-customBlack text-xl font-semibold mb-1">{{ $ormawa->jumlah_kegiatan }}</p>
+                            <p class="text-customBlue">Jumlah Kegiatan</p>
+                        </a>
+                        <a href="#" class="stat-card flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center mt-4">
+                            <i class="fa-solid fa-chart-line fa-4x mr-2 mb-1 text-customBlue"></i>
+                            <p class="text-customBlack text-xl font-semibold mb-1">{{ $ormawa->jumlah_anggota }}</p>
+                            <p class="text-customBlue">Jumlah Anggota</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    @include('Pembina.Components.footer')
+@endsection
+
+
+
+@foreach ($ormawa->ormawaPembina as $ormawaPembina)
+    @foreach ($ormawaPembina->pengajuanLegalitas as $pengajuanLegalitas)
+        @if ($pengajuanLegalitas && $pengajuanLegalitas->skLegalitas)
+            @foreach ($pengajuanLegalitas->skLegalitas as $skLegalitas)
+                @if ($skLegalitas && is_object($skLegalitas) && $skLegalitas->proposalKegiatan)
+    @foreach ($skLegalitas->proposalKegiatan as $proposalKegiatan)
+        @foreach ($proposalKegiatan->monitoringKegiatan as $monitoringKegiatan)
+            {{-- Mengganti angka dengan data dari MonitoringKegiatan --}}
+            <a href="#"
+                class="flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center">
+                <i class="fa-solid fa-money-bill-1 fa-4x mr-2 mb-1 text-customBlue"></i>
+                <p class="text-xl text-customBlack mb-1 font-semibold">RP. {{ number_format($monitoringKegiatan->saldo, 2, ',', '.') }}</p>
+                <p class="text-customBlue">Saldo</p>
+            </a>
+            <a href="#"
+                class="flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center mt-4">
+                <i class="fa-solid fa-arrow-up fa-4x mr-2 mb-1 text-customBlue"></i>
+                <p class="text-xl text-customBlack font-semibold mb-1">RP. {{ number_format($monitoringKegiatan->jumlah_dana, 2, ',', '.') }}</p>
+                <p class="text-customBlue">Dana Terpakai</p>
+            </a>
+        @endforeach
+    @endforeach
+@endif
+
+            @endforeach
+        @endif
+    @endforeach
+@endforeach
+
+
+
+@foreach ($ormawa->ormawaPembina as $ormawaPembina)
+    @foreach ($ormawaPembina->pengajuanLegalitas as $pengajuanLegalitas)
+        @foreach ($pengajuanLegalitas->skLegalitas as $skLegalitas)
+                @foreach ($skLegalitas->proposalKegiatan as $proposalKegiatan)
+                    @foreach ($proposalKegiatan->monitoringKegiatan as $monitoringKegiatan)
+                        <a href="#"
+                            class="flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center">
+                            <i class="fa-solid fa-money-bill-1 fa-4x mr-2 mb-1 text-customBlue"></i>
+                            <p class="text-xl text-customBlack mb-1 font-semibold">RP. {{ number_format($monitoringKegiatan->saldo, 2, ',', '.') }}</p>
+                            <p class="text-customBlue">Saldo</p>
+                        </a>
+                        <a href="#"
+                            class="flex flex-col bg-customWhite border border-gray-400 p-2 rounded-lg w-full h-44 justify-center mt-4">
+                            <i class="fa-solid fa-arrow-up fa-4x mr-2 mb-1 text-customBlue"></i>
+                            <p class="text-xl text-customBlack font-semibold mb-1">RP. {{ number_format($monitoringKegiatan->jumlah_dana, 2, ',', '.') }}</p>
+                            <p class="text-customBlue">Dana Terpakai</p>
+                        </a>
+                    @endforeach
+                @endforeach
+        @endforeach
+    @endforeach
+@endforeach
