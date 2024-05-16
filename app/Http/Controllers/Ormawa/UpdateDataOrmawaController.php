@@ -46,10 +46,16 @@ class UpdateDataOrmawaController extends Controller
         return $this->updateDataOrmawa->updateKepengurusan($request);
     }
 
-    public function indexKegiatan()
+        public function indexKegiatan()
     {
-    // Panggil fungsi indexKegiatan dari service
-        $data = $this->updateDataOrmawa->indexKegiatan();
+        // Meneruskan objek Request ke metode updateKepengurusan
+        return $this->updateDataOrmawa->indexKegiatan();
+    }
+
+    public function editKegiatan()
+    {
+    // Panggil fungsi editKegiatan dari service
+        $data = $this->updateDataOrmawa->editKegiatan();
 
         // Return view dengan data yang diteruskan
         return view('Ormawa/UpdateOrmawa/updateKegiatan', compact('data'));

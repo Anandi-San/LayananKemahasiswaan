@@ -97,7 +97,8 @@ Route::prefix('/ormawa')->middleware('auth')->group(function () {
     Route::post('/update/profil', [UpdateDataOrmawaController::class, 'updateOrmawa'])->name('ormawa.update.ormawa');
     Route::get('/profil/Kepengurusan', [UpdateDataOrmawaController::class, 'indexKepengurusan'])->name('index.Kepengurusan');
     Route::post('/update/Kepengurusan', [UpdateDataOrmawaController::class, 'updateKepengurusan'])->name('update.Kepengurusan');
-    Route::get('/profil/Kegiatan', [UpdateDataOrmawaController::class, 'indexKegiatan'])->name('index.Kegiatan');
+    Route::get('/index/Kegiatan', [UpdateDataOrmawaController::class, 'indexKegiatan'])->name('index.Kegiatan');
+    Route::get('/edit/Kegiatan/{id}', [UpdateDataOrmawaController::class, 'editKegiatan'])->name('edit.Kegiatan');
     Route::post('/update/Kegiatan', [UpdateDataOrmawaController::class, 'updateKegiatan'])->name('update.Kegiatan');
 });
 
