@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_ormawa')->nullable();
             $table->foreignId('id_proposal_kegiatan')->nullable();
-            $table->string('jumlah_dana')->nullable();
-            $table->string('saldo')->nullable();
+            $table->decimal('jumlah_dana', 15, 2)->nullable(); // Menggunakan tipe data decimal dengan skala 10 dan 2 digit di belakang koma
+            $table->decimal('saldo', 15, 2)->nullable();
             $table->enum('parameter_keberhasilan', ['tidak berhasil', 'berhasil'])->nullable();
             $table->text('catatan')->nullable();
             $table->timestamps();

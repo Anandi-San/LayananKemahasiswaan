@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Ormawa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 
 class UpdateDataOrmawa {
@@ -241,105 +242,87 @@ public function indexKegiatan()
 }
 
 // service
-    public function editKegiatan()
-    {
-        // Ambil ID pengguna saat ini
-        $userId = Auth::id();
-        
-        // Ambil pengguna berdasarkan ID
-        $user = Pengguna::find($userId);
-
-        // Dapatkan Ormawa yang terkait dengan pengguna
-        $ormawa = $user->ormawa->first();
-
-        // Jika tidak ada data Ormawa, tampilkan pesan kesalahan
-        if (!$ormawa) {
-            dd('Tidak ada data Ormawa ditemukan');
-        }
-
-        // Dapatkan relasi OrmawaPembina yang terkait dengan Ormawa
-        $ormawaPembina = $ormawa->ormawaPembina;
-
-        // Array untuk menyimpan data proposal kegiatan
-        $proposalKegiatanOptions = [];
-
-
-        // Iterasi melalui setiap OrmawaPembina untuk mengumpulkan data proposal kegiatan dan monitoring kegiatan
-        // Iterasi melalui setiap OrmawaPembina untuk mengumpulkan data proposal kegiatan dan monitoring kegiatan
-    foreach ($ormawaPembina as $pembina) {
-        // Iterasi melalui setiap pengajuan legalitas
-        foreach ($pembina->pengajuanLegalitas as $pengajuan) {
-            // Muat SKLegalitas yang terkait dengan pengajuan
-            $pengajuan->load('skLegalitas');
-
-            // Cek apakah ada SKLegalitas yang dimuat
-            if ($pengajuan->skLegalitas) {
-                // Dapatkan SKLegalitas
-                $skLegalitas = $pengajuan->skLegalitas;
-
-                // Iterasi melalui setiap Proposal Kegiatan pada SKLegalitas
-                foreach ($skLegalitas->proposalKegiatan as $proposal) {
-                    // Tambahkan nama proposal kegiatan ke dalam array opsi
-                    $proposalKegiatanOptions[$proposal->id] = $proposal->nama_kegiatan;
-
-                    // Dapatkan data monitoring kegiatan berdasarkan id_ormawa
-                    $monitoringKegiatan[] = MonitoringKegiatan::where('id_ormawa', $ormawa->id)->first();
-
-                    // Inisialisasi array untuk menyimpan semua data kegiatan pembayaran
-                    $kegiatanpembayaran = [];
-
-                    // Iterasi melalui setiap data monitoring kegiatan
-                    foreach ($monitoringKegiatan as $kegiatan) {
-                        // Dapatkan semua data kegiatan pembayaran berdasarkan id_monitoring_kegiatan yang sesuai
-                        $keteranganPembayaran = KeteranganPembayaran::where('id_monitoring_kegiatan', $kegiatan->id)->get();
-                
-                        // Hitung total pembayaran
-                        $totalPembayaran = $keteranganPembayaran->sum('jumlah_pembayaran');
-                
-                        // Hitung saldo
-                        $saldo = $kegiatan->jumlah_dana - $totalPembayaran;
-                
-                        // Tambahkan saldo ke objek monitoring kegiatan
-                        $kegiatan->saldo = $saldo;
-                
-                        // Tambahkan semua data kegiatan pembayaran ke dalam array
-                        $kegiatanpembayaran[] = $keteranganPembayaran;
-                    }
-                    // dd($kegiatanpembayaran);
-                }
-                // dd($monitoringKegiatan);
-            }
-        }
-    }
-
-        $data = [
-            'proposalKegiatanOptions' => $proposalKegiatanOptions,
-            'monitoringKegiatan' => $monitoringKegiatan,
-            'keteranganPembayaran' => $kegiatanpembayaran
-        ];
-
-        // Return view dengan data
-        return $data;
-    }
-
-    public function updateKegiatan(Request $request)
+    // Controller
+    public function editKegiatan($id)
 {
-    // Validasi data permintaan
-    $request->validate([
-        'id_monitoring_kegiatan' => 'required|integer|exists:tbl_monitoring_kegiatan,id',
-        'id_proposal_kegiatan' => 'required|integer|exists:tbl_proposal_kegiatan,id',
-        'id_ormawa' => 'required|integer|exists:tbl_ormawa,id',
-        'jumlah-dana' => 'required',
-        'saldo' => 'required',
-        'jenis-pembayaran' => 'array|required',
-        'jenis-pembayaran.*' => 'string|required',
-        'jumlah-pembayaran' => 'array|required',
-        'jumlah-pembayaran.*' => 'numeric|required',
-        'tanggal-pembayaran' => 'array|required',
-        'tanggal-pembayaran.*' => 'date|required',
-        'catatan' => 'nullable|string',
-        'kegiatan-status' => 'nullable|string|in:berhasil,tidak berhasil'
-    ]);
+    // Ambil ID pengguna saat ini
+    $userId = Auth::id();
+
+    // Ambil pengguna berdasarkan ID
+    $user = Pengguna::find($userId);
+
+    // Dapatkan Ormawa yang terkait dengan pengguna
+    $ormawa = $user->ormawa->first();
+    // dd($ormawa);
+    // Jika tidak ada data Ormawa, tampilkan pesan kesalahan
+    if (!$ormawa) {
+        dd('Tidak ada data Ormawa ditemukan');
+    }
+
+    // Dapatkan proposal kegiatan berdasarkan ID
+    $proposal = Proposal_Kegiatan::findOrFail($id);
+
+    // Jika proposal tidak ditemukan, tampilkan pesan kesalahan
+    if (!$proposal) {
+        dd('Proposal Kegiatan tidak ditemukan');
+    }
+
+    // Dapatkan data monitoring kegiatan berdasarkan id_ormawa dan id proposal
+    $monitoringKegiatan = MonitoringKegiatan::where('id_ormawa', $ormawa->id)
+                                            ->where('id_proposal_kegiatan', $id)
+                                            ->get();
+    // dd($monitoringKegiatan);
+
+    // Jika monitoringKegiatan kosong, dapatkan hanya jumlah_dana dari semua data monitoring kegiatan yang terkait dengan ormawa
+    if ($monitoringKegiatan->isEmpty()) {
+        $monitoringKegiatan = MonitoringKegiatan::select('id', 'jumlah_dana', 'id_ormawa')
+                                                ->where('id_ormawa', $ormawa->id)
+                                                ->get();
+    } else {
+        // Array untuk menyimpan data kegiatan pembayaran
+        $kegiatanpembayaran = [];
+
+        // Iterasi melalui setiap data monitoring kegiatan
+        foreach ($monitoringKegiatan as $kegiatan) {
+            // Dapatkan semua data kegiatan pembayaran berdasarkan id_monitoring_kegiatan yang sesuai
+            $keteranganPembayaran = KeteranganPembayaran::where('id_monitoring_kegiatan', $kegiatan->id)->get();
+
+            // Hitung total pembayaran
+            $totalPembayaran = $keteranganPembayaran->sum('jumlah_pembayaran');
+            // Hitung saldo
+            $saldo = $kegiatan->jumlah_dana - $totalPembayaran;
+
+            // Tambahkan saldo ke objek monitoring kegiatan
+            $kegiatan->saldo = $saldo;
+
+            // Tambahkan semua data kegiatan pembayaran ke dalam array
+            $kegiatanpembayaran[$kegiatan->id] = $keteranganPembayaran;
+        }
+    }
+
+    $data = [
+        'proposalKegiatan' => $proposal,
+        'monitoringKegiatan' => $monitoringKegiatan,
+        'keteranganPembayaran' => isset($kegiatanpembayaran) ? $kegiatanpembayaran : []
+    ];
+
+    // Return view dengan data
+    return view('Ormawa.UpdateOrmawa.updateKegiatan', $data);
+}
+
+
+
+
+
+
+public function updateKegiatan(Request $request)
+{
+    $user = Auth::user();
+    $ormawa = $user->ormawa->first();
+
+    if (!$ormawa) {
+        return redirect()->back()->withErrors('Tidak ada data Ormawa ditemukan');
+    }
 
     // Cek apakah monitoringKegiatan ada berdasarkan id_proposal_kegiatan
     $monitoringKegiatan = MonitoringKegiatan::where('id_proposal_kegiatan', $request->input('id_proposal_kegiatan'))->first();
@@ -348,32 +331,54 @@ public function indexKegiatan()
         // Buat catatan baru jika tidak ditemukan
         $monitoringKegiatan = new MonitoringKegiatan();
         $monitoringKegiatan->id_proposal_kegiatan = $request->input('id_proposal_kegiatan');
-        $monitoringKegiatan->id_ormawa = $request->input('id_ormawa');
+        $monitoringKegiatan->id_ormawa = $ormawa->id;
     }
 
     // Perbarui data monitoring
-    $monitoringKegiatan->jumlah_dana = $request->input('jumlah-dana')[0];  // Akses elemen pertama
-    $monitoringKegiatan->saldo = $request->input('saldo')[0];              // Akses elemen pertama
+    $monitoringKegiatan->jumlah_dana = $request->input('jumlah-dana')[0];
+    // Dapatkan total jumlah pembayaran untuk id_monitoring_kegiatan tertentu
+    $totalPembayaran = DB::table('tbl_keterangan_pembayaran')
+        ->select(DB::raw('SUM(jumlah_pembayaran) as total_pembayaran'))
+        ->where('id_monitoring_kegiatan', $monitoringKegiatan->id)
+        ->first();
+
+    // Hitung saldo dengan mengurangkan total pembayaran dari jumlah dana
+    $monitoringKegiatan->saldo = $monitoringKegiatan->jumlah_dana - $totalPembayaran->total_pembayaran;
     $monitoringKegiatan->catatan = $request->input('catatan');
     $monitoringKegiatan->parameter_keberhasilan = $request->input('kegiatan-status') == 'berhasil' ? 'berhasil' : 'tidak berhasil';
     $monitoringKegiatan->save();
 
-    // Insert payment details
-    $paymentDetails = [];
-    foreach ($request->input('jenis-pembayaran') as $index => $jenisPembayaran) {
-        $paymentDetails[] = [
-            'id_monitoring_kegiatan' => $monitoringKegiatan->id,
-            'jenis_pembayaran' => $jenisPembayaran,
-            'jumlah_pembayaran' => $request->input('jumlah-pembayaran')[$index],
-            'tanggal_pembayaran' => $request->input('tanggal-pembayaran')[$index],
-            'created_at' => now(),
-            'updated_at' => now()
-        ];
+    // Update payment details
+    $paymentDetails = $request->input('jenis-pembayaran');
+    if ($paymentDetails) {
+        foreach ($paymentDetails as $index => $jenisPembayaran) {
+            // Cek apakah data sudah ada di database
+            $existingPayment = KeteranganPembayaran::where('id_monitoring_kegiatan', $monitoringKegiatan->id)
+                ->where('jenis_pembayaran', $jenisPembayaran)
+                ->first();
+
+            if ($existingPayment) {
+                // Update existing payment
+                $existingPayment->jumlah_pembayaran = $request->input('jumlah-pembayaran')[$index];
+                $existingPayment->tanggal_pembayaran = $request->input('tanggal-pembayaran')[$index];
+                $existingPayment->save();
+            } else {
+                // Insert new payment
+                KeteranganPembayaran::create([
+                    'id_monitoring_kegiatan' => $monitoringKegiatan->id,
+                    'jenis_pembayaran' => $jenisPembayaran,
+                    'jumlah_pembayaran' => $request->input('jumlah-pembayaran')[$index],
+                    'tanggal_pembayaran' => $request->input('tanggal-pembayaran')[$index],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        }
     }
-    KeteranganPembayaran::insert($paymentDetails);
 
     // Return a success response
     return redirect()->back()->with('success', 'Kegiatan berhasil diperbarui');
 }
+
 
 }
