@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Ormawa;
 
+use App\Models\PengajuanLegalitas;
 use App\Models\Proposal_Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,12 +13,22 @@ class ProposalKegiatan {
     {
     $userId = Auth::user()->id;
 
+    $pengajuanLegalitas = PengajuanLegalitas::whereHas('ormawaPembina.ormawa.pengguna', function ($query) use ($userId) {
+        $query->where('id', $userId);
+    })->first();
+    // dd($pengajuanLegalitas);
+
+    if (!$pengajuanLegalitas || $pengajuanLegalitas->status !== 'Disetujui') {
+        return view('Ormawa/ProposalKegiatan/tidakada');
+    }
+
     // Dapatkan data proposal kegiatan yang terkait dengan pengguna yang sedang login
     $proposalKegiatan = Proposal_Kegiatan::whereHas('skLegalitas.pengajuanLegalitas.ormawaPembina.ormawa.pengguna', function ($query) use ($userId) {
         $query->where('id', $userId);
     })->get();
     // dd($proposalKegiatan);
 
+    
     // Kemudian kembalikan data ke blade
     $data = [
         'proposalKegiatan' => $proposalKegiatan,

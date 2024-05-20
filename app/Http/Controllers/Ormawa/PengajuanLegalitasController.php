@@ -17,8 +17,7 @@ class PengajuanLegalitasController extends Controller
 
     public function index()
     {
-    $proposal = "Proposal Pengajuan Legalitas"; // Set the desired value for $proposal
-    return $this->unggahLegalitas->index($proposal);
+    return $this->unggahLegalitas->index();
     }
 
     public function waitRevision()

@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'tbl_pengguna',
     ],
 
     /*
@@ -65,12 +65,11 @@ return [
             'model' => App\Models\Pengguna::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'tbl_pengguna' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pengguna::class,
+        ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
@@ -92,12 +91,18 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
+            'provider' => 'tbl_pengguna',
+            'table' => 'password_resets',
             'expire' => 60,
-            'throttle' => 60,
+        ],
+
+        'tbl_pengguna' => [
+            'provider' => 'tbl_pengguna',
+            'table' => 'password_resets', // Sesuaikan jika perlu
+            'expire' => 60,
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

@@ -11,38 +11,34 @@ use Illuminate\Support\Facades\Storage;
 class UnggahLegalitas
 {
 
-    public function index($proposal)
-    {
+    public function index()
+{
     $user = Auth::user();
-    
 
     // Cek apakah pengguna merupakan pembina ormawa
     $ormawaPembina = $user->ormawaPembina->first();
     // dd($ormawaPembina);
 
-
     // Dapatkan pengajuan legalitas yang terkait dengan pengguna
-    $legalitas = $ormawaPembina->pengajuanLegalitas->first();
+    $legalitas = $ormawaPembina ? $ormawaPembina->pengajuanLegalitas->first() : null;
+    // dd($legalitas);
 
     if ($legalitas) {
         // Jika pengajuan legalitas sudah ada, periksa statusnya
-        if ($legalitas->status === 'Menunggu') {
-            return redirect()->route('waitingrevision');
-        } elseif ($legalitas->status === 'Revisi Kemahasiswaan') {
-            // Jika pengajuan legalitas sudah disetujui, arahkan ke halaman tertentu
-            return redirect()->route('listRevisi');
-        } elseif ($legalitas->status === 'Telah Dorevisi') {
-            return redirect()->route('revision');
+        switch ($legalitas->status) {
+            case 'Menunggu':
+                return redirect()->route('waitingrevision');
+            case 'Revisi Kemahasiswaan':
+                return redirect()->route('listRevisi');
+            case 'Telah Direvisi':
+                return redirect()->route('revision');
+        }
     }
-}
 
     // Jika belum mengunggah, tampilkan halaman unggah legalitas
-    $data = [
-        'content' => 'ormawa/legalitas/index',
-        'proposal' => $proposal,
-    ];
-    return view('Ormawa/UnggahPengajuanLegalitas/index', $data);
-    }
+    return view('Ormawa/UnggahPengajuanLegalitas/index', compact('legalitas'));
+}
+
 
     public function waitRevision()
     {

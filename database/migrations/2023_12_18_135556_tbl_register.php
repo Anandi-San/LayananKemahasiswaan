@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('tbl_register', function (Blueprint $table) {
             $table->id();
-            $table->string('email_pengguna');
+            $table->string('email_pengguna')->unique();
             $table->string('nama_ormawa');
             $table->enum('jenis_ormawa', ['Eksekutif', 'Legislatif', 'UKM']);
             $table->string('nama_dosen_pembina');
-            $table->string('nomor_telopen_PIC');
+            $table->string('nomor_telepon_PIC');
             $table->string('jurusan')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -1,46 +1,56 @@
-@extends('Kemahasiswaan.Components.layout')
-{{-- @section('title', 'Membuka File PDF Lokal') --}}
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="flex flex-col items-center">
-        <div class="h-16 w-screen flex items-center justify-between">
-            <div class="bg-customWhite h-16 w-screen shadow-2xl hidden md:block text-center">
-                <button id="toggle-draw" class="bg-blue-500 text-white px-4 py-2 rounded">Aktifkan Coretan</button>
-                <button id="add-textbox" class="bg-green-500 text-white px-4 py-2 rounded">Tambahkan Textbox</button>
-                <input type="file" id="upload-image" class="hidden" accept="image/*">
-                <button id="add-image" class="bg-red-500 text-white px-4 py-2 rounded">Tambahkan Gambar</button>
-                <button id="download-pdf" class="bg-red-500 text-white px-4 py-2 rounded">Download PDF</button>
-            </div>
-            <div class="bg-customBlack h-16 w-full md:w-96 flex items-center justify-center">
-                <p class="text-white text-center text-lg md:text-2xl">Proposal Kegiatan</p>
-            </div>
-        </div>
-        <div class="flex flex-col md:flex-row"> <!-- Mengubah flex-row menjadi flex-col untuk tampilan mobile -->
-            <div class="flex justify-between w-screen">
-                <div class="hidden md:block">
-                </div>
-                <div class="bg-customGray h-screen w-full md:w-3/6 flex justify-center items-center">
-                    <!-- Menambahkan kelas justify-center dan items-center untuk posisikan kontainer di tengah -->
-                    <div id="pdf-viewer" class="w-full h-full"></div>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuka File PDF Lokal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .textbox {
+            position: absolute;
+            border: 1px solid #000;
+            background-color: transparent;
+            padding: 5px;
+            resize: both;
+            overflow: auto;
+            min-width: 50px;
+            min-height: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: text;
+        }
 
-                <div class="bg-customGray h-screen w-20 md:w-1/5 flex flex-col justify-between">
-                    <div class="flex flex-col">
-                        <div class="text-CustomBlack text-sm md:text-2xl font-bold ml-2 mt-8 md:mt-12">Catatan</div>
-                        <hr class="border-b border-customBlack">
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <!-- Menambahkan kelas items-center dan justify-center -->
-                        <button
-                            class="h-12 w-20 md:w-4/5 md:mr-0 mr-2 bg-customBlue text-white font-bold py-3 px-6 rounded mt-4 mb-6 text-sm">Revisi</button>
-                        <!-- Mengubah padding vertikal menjadi 3 piksel dan horizontal menjadi 6 piksel -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        .draggable-image {
+            position: absolute;
+            max-width: 100px;
+            cursor: move;
+        }
 
-    @include('Ormawa.Components.footer')
+        .resizer {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        .resizer.active {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-4">
+
+    <!-- Tambahkan tombol untuk mengaktifkan/menonaktifkan mode mencoret -->
+    <button id="toggle-draw" class="bg-blue-500 text-white px-4 py-2 rounded">Aktifkan Coretan</button>
+    <button id="add-textbox" class="bg-green-500 text-white px-4 py-2 rounded">Tambahkan Textbox</button>
+    <input type="file" id="upload-image" class="hidden" accept="image/*">
+    <button id="add-image" class="bg-red-500 text-white px-4 py-2 rounded">Tambahkan Gambar</button>
+    <button id="download-pdf" class="bg-red-500 text-white px-4 py-2 rounded">Download PDF</button>
+
+    <div id="pdf-viewer" class="relative mt-4"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="{{ asset('pdfjs/build/pdf.mjs') }}" type="module"></script>
@@ -80,11 +90,9 @@
 
                 canvasContainer.addEventListener('mousedown', (e) => {
                     if (isDrawing) {
-                        const rect = canvas.getBoundingClientRect();
-                        [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
+                        [lastX, lastY] = [e.offsetX, e.offsetY];
                     }
                 });
-
 
                 canvasContainer.addEventListener('mousemove', (e) => {
                     if (!isDrawing) return;
@@ -145,9 +153,9 @@
                     const textbox = document.createElement('div');
                     textbox.contentEditable = "true"; // Set contentEditable to true
                     textbox.className = 'textbox';
-                    textbox.style.left = '192px';
-                    textbox.style.top = '50px';
-                    textbox.textContent = '';
+                    textbox.style.left = '10px';
+                    textbox.style.top = '10px';
+                    textbox.textContent = 'Tulis sesuatu...';
 
                     // Simpan referensi halaman untuk textbox ini
                     const currentPage = canvases.findIndex(canvas => canvas.getBoundingClientRect().top >= window.scrollY);
@@ -169,7 +177,7 @@
                         reader.onload = function (e) {
                             const img = new Image();
                             img.src = e.target.result;
-                            img.className = 'draggable-image w-1/6 h-1/2';
+                            img.className = 'draggable-image';
                             img.style.left = '10px';
                             img.style.top = '10px';
 
@@ -237,28 +245,26 @@
                         pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
 
                         // Add textbox contents to the PDF for this page only
-                        // Add textbox contents to the PDF for this page only
-                    document.querySelectorAll(`.textbox[data-page-number="${index + 1}"]`).forEach((textbox) => {
-                        const text = textbox.textContent;
-                        const style = window.getComputedStyle(textbox);
-                        const left = parseInt(style.left) / (canvas.width / pdf.internal.pageSize.getWidth());
-                        const top = (parseInt(style.top) / (canvas.height / pdf.internal.pageSize.getHeight())) + pdf.internal.getFontSize();
+                        document.querySelectorAll(`.textbox[data-page-number="${index + 1}"]`).forEach((textbox) => {
+                            const text = textbox.textContent;
+                            const style = window.getComputedStyle(textbox);
+                            const left = parseInt(style.left) / (canvas.width / pdf.internal.pageSize.getWidth());
+                            const top = (parseInt(style.top) / (canvas.height / pdf.internal.pageSize.getHeight())) + pdf.internal.getFontSize();
 
-                        pdf.setFontSize(parseInt(style.fontSize));
-                        pdf.text(text, left, top);
-                    });
+                            pdf.setFontSize(parseInt(style.fontSize));
+                            pdf.text(text, left, top);
+                        });
 
-// Add images to the PDF for this page only
-                    document.querySelectorAll(`.draggable-image[data-page-number="${index + 1}"]`).forEach((image) => {
-                        const style = window.getComputedStyle(image);
-                        const left = parseInt(style.left) / (canvas.width / pdf.internal.pageSize.getWidth());
-                        const top = parseInt(style.top) / (canvas.height / pdf.internal.pageSize.getHeight());
-                        const imgWidth = image.width / (canvas.width / pdf.internal.pageSize.getWidth());
-                        const imgHeight = image.height / (canvas.height / pdf.internal.pageSize.getHeight());
+                        // Add images to the PDF for this page only
+                        document.querySelectorAll(`.draggable-image[data-page-number="${index + 1}"]`).forEach((image) => {
+                            const style = window.getComputedStyle(image);
+                            const left = parseInt(style.left) / (canvas.width / pdf.internal.pageSize.getWidth());
+                            const top = parseInt(style.top) / (canvas.height / pdf.internal.pageSize.getHeight());
+                            const imgWidth = image.width / (canvas.width / pdf.internal.pageSize.getWidth());
+                            const imgHeight = image.height / (canvas.height / pdf.internal.pageSize.getHeight());
 
-                        pdf.addImage(image.src, 'JPEG', left, top, imgWidth, imgHeight);
-                    });
-
+                            pdf.addImage(image.src, 'JPEG', left, top, imgWidth, imgHeight);
+                        });
                     });
 
                     pdf.save('annotated.pdf');
@@ -301,4 +307,6 @@
         displayPDF();
     </script>
 
-@endsection
+</body>
+
+</html>

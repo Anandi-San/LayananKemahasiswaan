@@ -7,6 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
+    <style>
+    .textbox {
+            position: absolute;
+            border: 1px solid #000;
+            background-color: transparent;
+            padding: 5px;
+            resize: both;
+            overflow: auto;
+            min-width: 50px;
+            min-height: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: text;
+        -index: 999; /* Sesuaikan jika diperlukan */
+    }
+    .draggable-image {
+            position: absolute;
+            max-width: 100px;
+            cursor: move;
+        }
+
+        .resizer {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        .resizer.active {
+            background-color: #4CAF50;
+        }
+</style>
 </head>
 
 <body class="overflow-hidden">

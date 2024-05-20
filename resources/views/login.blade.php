@@ -52,7 +52,7 @@
 
                 <div class="relative flex justify-between">
                     <div class="absolute right-0 mb-12">
-                        <a href="#" class="text-sm text-customBlack" style="text-decoration: underline;">Lupa Password?</a>
+                        <a href="{{ route('forget-password') }}" class="text-sm text-customBlack" style="text-decoration: underline;">Lupa Password?</a>
                     </div>
                 </div>
                 <button type="submit" class="w-full bg-customBlue text-white px-4 py-2 rounded-md mb-4 mt-8">Masuk</button>
@@ -61,8 +61,8 @@
                     <span class="text-gray-700">ATAU</span>
                     <hr class="border-t border-gray-300 flex-grow ml-3 mr-9">
                 </div>
-                <button class="w-full bg-customBlue text-white px-4 py-2 rounded-md mt-4">Daftar</button>
             </form>
+            <a href="{{ route('register') }}" class="w-full bg-customBlue text-center text-white px-4 py-2 rounded-md mt-4">Daftar</a>
         </div>
     </div>
 </body>

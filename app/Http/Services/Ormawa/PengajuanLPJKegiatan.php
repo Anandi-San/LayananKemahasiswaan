@@ -20,6 +20,10 @@ class PengajuanLPJkegiatan {
     })->get();
     // dd($proposalKegiatan);
 
+    if ($proposalKegiatan->isEmpty()) {
+        return view('Ormawa/LpjKegiatan/tidakada');
+    }
+
     // Kemudian kembalikan data ke blade
     $data = [
         'proposalKegiatan' => $proposalKegiatan,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +10,14 @@ class Register extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'tbl_register';
+
     protected $fillable = [
         'email_pengguna',
         'nama_ormawa',
         'jenis_ormawa',
         'nama_dosen_pembina',
-        'nomor_telopen_PIC',
+        'nomor_telepon_PIC',
         'jurusan',
     ];
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Kemahasiswaan\PDFLpjKegiatanController;
 use App\Http\Controllers\Kemahasiswaan\PDFpengajuanController;
@@ -7,8 +8,10 @@ use App\Http\Controllers\Kemahasiswaan\PDFproposalKegiatanController;
 use App\Http\Controllers\kemahasiswaan\PDFskLegalitasController;
 use App\Http\Controllers\Kemahasiswaan\UpdateProfilController;
 use App\Http\Controllers\Pembina\UpdateProfilPembinaController;
+use App\Http\Controllers\Guest\RegisterController;
 use App\Http\Controllers\SuperAdmin\EditKemahasiswaanController;
 use App\Http\Controllers\SuperAdmin\HistoryKemahasiswaanController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Auth\LoginController;
@@ -52,13 +55,30 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+// Auth::routes();
+
 Route::get('/', [LandingPageController::class, 'index'])->name('/');
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+Route::get('/forget-password', [ForgetPasswordController::class, 'index'])->name('forget-password');
+Route::post('/forget-password', [ForgetPasswordController::class, 'sendResetLink'])->name('forget-password.send');
+
+Route::get('/reset-password/{token}', function (Request $request, string $token) {
+    return view('Guest.LupaPassword.reset', ['token' => $token, 'email' => $request->query('email')]);
+})->middleware('guest')->name('password.reset');
+
+
+Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword'])->name('password.update');
+
+
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::prefix('/ormawa')->middleware('auth')->group(function () {
-    
+
     Route::get('/beranda', [OrmawaController::class, 'index'])->name('ormawa');
     // Pengajuan Legalitas
     Route::get('/legalitas', [PengajuanLegalitasController::class, 'index'])->name('legalitas');
@@ -70,28 +90,28 @@ Route::prefix('/ormawa')->middleware('auth')->group(function () {
     route::patch('/legalitas/revisi', [PengajuanLegalitasController::class, 'update'])->name('revisi.pengajuan');
 
     // Proposal Kegiatan
-    Route::get('/proposalKegiatan/beranda', [ProposalKegiatanOrmawaController::class, 'index'])->name('index.proposalKegiatan'); 
-    Route::get('/proposalKegiatan', [ProposalKegiatanOrmawaController::class, 'unggah'])->name('proposalKegiatan'); 
+    Route::get('/proposalKegiatan/beranda', [ProposalKegiatanOrmawaController::class, 'index'])->name('index.proposalKegiatan');
+    Route::get('/proposalKegiatan', [ProposalKegiatanOrmawaController::class, 'unggah'])->name('proposalKegiatan');
     Route::post('/proposalKegiatan/upload', [ProposalKegiatanOrmawaController::class, 'store'])->name('proposalkegiatan.upload');
-    Route::get('/proposalKegiatan/menunggu', [ProposalKegiatanOrmawaController::class, 'menunggu'])->name('menungguProposalKegiatan'); 
-    Route::get('/proposalKegiatan/daftarRevisi', [ProposalKegiatanOrmawaController::class, 'listRevisi'])->name('ListRevisiproposalKegiatan'); 
+    Route::get('/proposalKegiatan/menunggu', [ProposalKegiatanOrmawaController::class, 'menunggu'])->name('menungguProposalKegiatan');
+    Route::get('/proposalKegiatan/daftarRevisi', [ProposalKegiatanOrmawaController::class, 'listRevisi'])->name('ListRevisiproposalKegiatan');
     Route::get('/proposalKegiatan/Revisi', [ProposalKegiatanOrmawaController::class, 'Revisi'])->name('RevisiproposalKegiatan');
-    
+
 
     //LPJ Kegiatan
     Route::get('/LPJKegiatan/index', [LPJKegiatanController::class, 'index'])->name('LPJkegiatan.beranda');
     Route::get('/LPJKegiatan/{id}/unggah', [LPJKegiatanController::class, 'unggah'])->name('LPJKegiatan');
     Route::post('/LPJKegiatan/upload', [LPJKegiatanController::class, 'store'])->name('lpjkegiatan.upload');
-    Route::get('/LPJKegiatan/menunggu', [LPJKegiatanController::class, 'menunggu'])->name('menungguLPJKegiatan'); 
-    Route::get('/LPJKegiatan/daftarRevisi', [LPJKegiatanController::class, 'listRevisi'])->name('ListRevisiLPJKegiatan'); 
-    Route::get('/LPJKegiatan/Revisi/{id}', [LPJKegiatanController::class, 'revisi'])->name('RevisiLPJKegiatan'); 
-    
+    Route::get('/LPJKegiatan/menunggu', [LPJKegiatanController::class, 'menunggu'])->name('menungguLPJKegiatan');
+    Route::get('/LPJKegiatan/daftarRevisi', [LPJKegiatanController::class, 'listRevisi'])->name('ListRevisiLPJKegiatan');
+    Route::get('/LPJKegiatan/Revisi/{id}', [LPJKegiatanController::class, 'revisi'])->name('RevisiLPJKegiatan');
+
     //Sk Legalitas
     Route::get('/SKlegalitas', [SkLegalitasController::class, 'index'])->name('Sklegalitas');
     //view untuk editedit
-    Route::get('/SKlegalitas/view', [SkLegalitasController::class, 'download'])->name('Sklegalitasview'); 
+    Route::get('/SKlegalitas/view', [SkLegalitasController::class, 'download'])->name('Sklegalitasview');
 
-    
+
     //UpdateDataOrmawa
     Route::get('/profil', [UpdateDataOrmawaController::class, 'index'])->name('ormawa.update');
     Route::post('/update/profil', [UpdateDataOrmawaController::class, 'updateOrmawa'])->name('ormawa.update.ormawa');
@@ -110,17 +130,18 @@ Route::prefix('/pembina')->middleware('auth')->group(function () {
     Route::resource('/SKlegalitas', SKlegalitasPembinaController::class);
     Route::resource('/edit-profil-pembina', UpdateProfilPembinaController::class);
     Route::patch('/update-profil-pembina', [UpdateProfilPembinaController::class, 'updateProfil'])->name('updateProfilPembina');
+    Route::get('/get-proposal-kegiatan/{id}', [BerandaPembinaController::class, 'getProposalKegiatan']);
 });
 
 Route::prefix('/kemahasiswaan')->middleware('auth')->group(function () {
     Route::get('/beranda', [BerandaKemahasiswaanController::class, 'index'])->name('kemahasiswaan');
 
     //Pengajuan Legalitas
-    Route::resource('/pengajuanlegalitas',pengajuanlegalitaskemahasiswaanController::class);
+    Route::resource('/pengajuanlegalitas', pengajuanlegalitaskemahasiswaanController::class);
     Route::get('/edit_pengajuanlegalitas/{id}/{type}', [PDFpengajuanController::class, 'edit'])->name('edit_pengajuanpdf');
 
     // Proposal Kegiatan
-    Route::resource('/proposalKegiatan',proposalkegiatankemahasiswaanController::class);
+    Route::resource('/proposalKegiatan', proposalkegiatankemahasiswaanController::class);
     Route::get('/edit_proposalkegiatan/{id}/{type}', [PDFproposalKegiatanController::class, 'edit'])->name('edit_proposalpdf');
 
     // LPJ Kegiatan
@@ -139,7 +160,7 @@ Route::prefix('/kemahasiswaan')->middleware('auth')->group(function () {
     Route::post('/editPembina/{id}', [pembinakemahasiswaanController::class, 'update'])->name('update.Pembina');
 
     // edit Sk
-    Route::resource('/editSKlegalitas', sklegalitaskemahasiswaanController::class); 
+    Route::resource('/editSKlegalitas', sklegalitaskemahasiswaanController::class);
     Route::get('/edit_Sklegalitas/{id}/{type}', [PDFskLegalitasController::class, 'edit'])->name('edit_SKlegalitaspdf');
     Route::resource('/editProfil', UpdateProfilController::class);
     // Definisikan rute untuk metode uploadLogo
@@ -159,7 +180,7 @@ Route::prefix('/superadmin')->middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Route::get('/superadmin', [BerandaSuperAdminController::class, 'index'])->name('superadmin');

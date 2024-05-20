@@ -2,7 +2,10 @@
 
 namespace App\Http\Services\Pembina;
 
+use App\Models\MonitoringKegiatan;
 use App\Models\Pembina;
+use App\Models\PengurusOrmawa;
+use App\Models\Proposal_Kegiatan;
 use Illuminate\Http\Request;
 use App\Models\Ormawa;
 use App\Models\OrmawaPembina;
@@ -15,61 +18,47 @@ class ViewOrmawaService {
     // Langkah 1: Ambil ID pengguna yang sedang login
     $userId = Auth::user()->id;
 
-    // Cari ID pembina berdasarkan ID pengg una dari tabel pembina
-    $pembina = Pembina::where('id_pengguna', $userId)->first();
-    // dd($pembina);
+    // Langkah 2: Ambil ID pembina berdasarkan ID pengguna
+    $pembinaId = Pembina::where('id_pengguna', $userId)->value('id');
 
-    // Jika tidak ada pembina terkait pengguna yang login, kembalikan array kosong
-    if (!$pembina) {
-        return [
-            'ormawas' => [], // Jika tidak ada pembina, kembalikan array kosong
-        ];
-    }
-
-    // Langkah 2: Ambil ID Ormawa dari tabel pivot OrmawaPembina berdasarkan ID pembina
-    $ormawaIds = OrmawaPembina::where('id_pembina', $pembina->id)
+    // Langkah 3: Ambil ID Ormawa dari tabel pivot OrmawaPembina berdasarkan ID pembina
+    $ormawaIds = OrmawaPembina::where('id_pembina', $pembinaId)
         ->pluck('id_ormawa')
         ->toArray();
 
-        // dd($ormawaIds);
+    // Langkah 4: Ambil data Ormawa dari tabel tbl_ormawa berdasarkan ID Ormawa
+    $ormawas = Ormawa::whereIn('id', $ormawaIds)->get();
 
-    // Periksa apakah ada ID Ormawa yang didapatkan
-    if (empty($ormawaIds)) {
-        return [
-            'ormawas' => [], // Jika tidak ada ID Ormawa, kembalikan array kosong
+    // Langkah 5: Ambil data Pengurus Ormawa dari tabel tbl_pengurus_ormawa berdasarkan ID Ormawa
+    $pengurusOrmawas = PengurusOrmawa::whereIn('id_ormawa', $ormawaIds)->get();
+
+    // Langkah 6: Ambil data Proposal Kegiatan dari tabel tbl_proposal_kegiatan berdasarkan ID Ormawa
+    $proposalKegiatans = Proposal_Kegiatan::whereHas('skLegalitas.pengajuanLegalitas.ormawaPembina', function ($query) use ($ormawaIds) {
+        $query->whereIn('id_ormawa', $ormawaIds);
+    })
+    ->with(['skLegalitas.pengajuanLegalitas.ormawaPembina', 'skLegalitas.pengajuanLegalitas', 'skLegalitas'])
+    ->get();
+    // dd($proposalKegiatans);
+
+    // Langkah 7: Ambil data Monitoring Kegiatan berdasarkan ID Proposal Kegiatan
+    $monitoringKegiatans = MonitoringKegiatan::whereIn('id_proposal_kegiatan', $proposalKegiatans->pluck('id'))->get();
+    // dd($monitoringKegiatans);
+
+    // Gabungkan data Ormawa, Pengurus Ormawa, dan Monitoring Kegiatan
+    $ormawaData = [];
+    foreach ($ormawas as $ormawa) {
+        $ormawaData[] = [
+            'ormawa' => $ormawa,
+            'pengurus' => $pengurusOrmawas->where('id_ormawa', $ormawa->id)->first(),
+            // 'proposal_kegiatan' => $proposalKegiatans,
+            'monitoring_kegiatan' => $monitoringKegiatans,
         ];
+        // dd($ormawaData);
     }
 
-    // Langkah 3: Ambil data Ormawa berdasarkan ID Ormawa
-    $ormawas = Ormawa::whereIn('id', $ormawaIds)
-    ->with([
-        'pengurusOrmawa' => function ($query) {
-            $query->select('id_ormawa', 'visi', 'misi');
-        },
-        'ormawaPembina' => function ($query) {
-            $query->with([
-                'pengajuanLegalitas' => function ($query) {
-                    $query->with([
-                        'skLegalitas' => function ($query) {
-                            $query->with([
-                                'proposalKegiatan' => function ($query) {
-                                    $query->with('monitoringKegiatan');
-                                }
-                            ]);
-                        }
-                    ]);
-                }
-            ]);
-        }
-    ])
-    ->get();
-    // dd($ormawas);
-
-    // selanjutnya itu harus dapat data monitoring kegiatan
-
-    // Kembalikan data Ormawa
+    // Kembalikan data Ormawa, Pengurus Ormawa, Proposal Kegiatan, dan Monitoring Kegiatan
     return [
-        'ormawas' => $ormawas,
+        'ormawaData' => $ormawaData,
     ];
 }
 

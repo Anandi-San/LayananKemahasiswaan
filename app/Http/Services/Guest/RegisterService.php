@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Services\Guest;
 
-use App\Register;
+use App\Models\Register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 Class RegisterService {
 
     public function index() {
-       $register = Register::latest()->get();
-
+        return view ('Guest.Register.index');
     }
 
     public function store(Request $request) {
@@ -19,12 +18,14 @@ Class RegisterService {
             "nama_ormawa" => "required",
             "jenis_ormawa" => "in:Eksekutif,Legislatif,UKM",
             "nama_dosen_pembina" => "required",
-            "nomor_telepon_PIC"
+            "nomor_telepon_PIC" => "required",
+            "jurusan" => 'required'
         ]);
+        // dd($registerValid);
 
         $register = Register::create($registerValid);
 
-        return $register;
+        return view('login', compact('register'));
     }
 
 }

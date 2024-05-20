@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('remember_token')->nullable();
             $table->enum('role', ['Ormawa', 'Pembina', 'Kemahasiswaan', 'SuperAdmin']);
             $table->timestamps();
             $table->softDeletes();
