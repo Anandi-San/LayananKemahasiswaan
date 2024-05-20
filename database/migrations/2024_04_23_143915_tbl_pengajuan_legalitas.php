@@ -18,10 +18,9 @@ return new class extends Migration
             $table->string('proposal_legalitas')->nullable();
             $table->string('AD_ART')->nullable();
             $table->string('surat_permohonan')->nullable();
-            $table->text('daftar_nama_kepengurusan')->nullable();
+            $table->text('daftar_sarana_prasarana')->nullable();
             $table->string('biodata_pembina')->nullable();
             $table->string('struktur_organisasi')->nullable();
-            $table->string('daftar_sarana_prasarana')->nullable();
             $table->string('GBHK')->nullable();
             $table->string('LPJ_kepengurusan')->nullable();
             $table->enum('status', ['Belum Unggah', 'Menunggu', 'Revisi Kemahasiswaan', 'Telah Dorevisi', 'Disetujui'])->default('Belum Unggah')->nullable();

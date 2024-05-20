@@ -2,7 +2,7 @@
 <title>Unggah Pengajuan Legalitas</title>
 
 @section('content')
-    @extends('Ormawa.Components.stepper')
+    @extends('Ormawa.Components.stepperPengajuan')
 
     @php
         $proposalNames = [

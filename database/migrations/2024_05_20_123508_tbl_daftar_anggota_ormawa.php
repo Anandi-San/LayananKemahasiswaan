@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_pembina', function (Blueprint $table) {
+        Schema::create('tbl_anggota_ormawa', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_pengguna');
-            $table->string('nama_pembina');
-            $table->text('photo_pembina')->nullable();
-            $table->enum('status', ['Aktif', 'Tidak Aktif']);
-            $table->timestamps();
+            $table->foreignId('id_pengajuan_legalitas')->nullable();
+            $table->string('nama_anggota')->nullable();
+            $table->string('nim')->nullable();
+            $table->string('jabatan')->nullable();
+            $table->timestamp('created_at')->nullable();
             $table->softDeletes();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_pembina');
+        //
     }
 };

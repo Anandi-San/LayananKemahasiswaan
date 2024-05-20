@@ -49,15 +49,14 @@
             </div>
         </div>
 
-<!-- Tampilkan data jumlah_dana -->
-<div class="mt-4 flex flex-col md:flex-row h-auto md:h-14 w-11/12 mx-auto mb-8 space-x-0 md:space-x-10">
-    <div class="flex flex-col md:w-1/2">
-        <label for="jumlah_dana" class="font-bold text-xl pb-2 pt-2 md:pt-0 text-customBlack">Dana yang Diberikan</label>
-        <input type="text" id="jumlah_dana" name="jumlah_dana" value="Rp {{ $monitoringKegiatan->jumlah_dana ?? '' }}" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-customBlue" oninput="formatRupiah(this)" required>
-    </div>
-    <div class="flex flex-col md:w-1/2 mt-4 md:mt-0">
-    </div>
-</div>
+        <div class="mt-4 flex flex-col md:flex-row h-auto md:h-14 w-11/12 mx-auto mb-8 space-x-0 md:space-x-10">
+            <div class="flex flex-col md:w-1/2">
+                <label for="jumlah_dana" class="font-bold text-xl pb-2 pt-2 md:pt-0 text-customBlack">Dana yang Diberikan</label>
+                <input type="text" id="jumlah_dana" name="jumlah_dana" value="Rp {{ $monitoringKegiatan->jumlah_dana ?? '' }}" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-customBlue" oninput="formatRupiah(this)" required>
+            </div>
+            <div class="flex flex-col md:w-1/2 mt-4 md:mt-0">
+            </div>
+        </div>
 
 
         <!-- Tombol -->

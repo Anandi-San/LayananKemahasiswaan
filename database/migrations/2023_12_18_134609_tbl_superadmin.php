@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tbl_superadmin', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_pengguna');
+            $table->string('nama_superAdmin');
+            $table->enum('status', ['Aktif', 'Tidak Aktif']);
             $table->timestamps();
             $table->softDeletes();
         });

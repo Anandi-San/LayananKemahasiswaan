@@ -40,24 +40,30 @@ class OrmawaService
                     ->latest()
                     ->first();
             }
-                // dd($skLegalitas);
+            // dd($skLegalitas);
 
             // Mengambil data proposal kegiatan terbaru
-           // Mengambil data proposal kegiatan terbaru
-            $proposalKegiatan = Proposal_Kegiatan::where('id_SK_legalitas', $skLegalitas->id)
-            ->latest()
-            ->get();
- 
-            // Mengambil data LPJ kegiatan terbaru
-            $lpjKegiatan = collect();
-            foreach ($proposalKegiatan as $proposal) {
-            $lpj = LPJKegiatan::where('id_proposal_kegiatan', $proposal->id)
-                ->latest()
-                ->first();
-            $lpjKegiatan->push($lpj);
+            $proposalKegiatan = collect();
+            if ($skLegalitas) {
+                $proposalKegiatan = Proposal_Kegiatan::where('id_SK_legalitas', $skLegalitas->id)
+                    ->latest()
+                    ->get();
             }
 
-                // dd($lpjKegiatan);
+            // Mengambil data LPJ kegiatan terbaru
+            $lpjKegiatan = collect();
+            if ($proposalKegiatan->isNotEmpty()) {
+                foreach ($proposalKegiatan as $proposal) {
+                    $lpj = LPJKegiatan::where('id_proposal_kegiatan', $proposal->id)
+                        ->latest()
+                        ->first();
+                    if ($lpj) {
+                        $lpjKegiatan->push($lpj);
+                    }
+                }
+            }
+
+            // dd($lpjKegiatan);
 
             return [
                 'pengguna' => $pengguna,
@@ -70,6 +76,7 @@ class OrmawaService
             ];
         });
     }
+
     public function calculateDuration($startDate, $endDate)
     {
         $start = \Carbon\Carbon::parse($startDate);
@@ -77,5 +84,7 @@ class OrmawaService
         
         return $end->diffInDays($start);
     }
+
+    
 
 }

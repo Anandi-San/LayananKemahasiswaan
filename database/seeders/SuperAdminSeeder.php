@@ -14,7 +14,9 @@ class SuperAdminSeeder extends Seeder
     public function run(): void
     {
         Superadmin::create([
-            'id_pengguna' => 5,
+            'nama_superAdmin' => 'Super Admin',
+            'id_pengguna' => 2,
+            'status' => 'Aktif',
         ]);
     }
 }

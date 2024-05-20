@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('singkatan')->nullable();
             $table->text('logo_ormawa')->nullable();
             $table->string('jurusan')->nullable();
+            $table->enum('status', ['Aktif', 'Tidak Aktif']);
             $table->timestamps();
             $table->softDeletes();
         });

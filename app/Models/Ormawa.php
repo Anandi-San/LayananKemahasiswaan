@@ -18,6 +18,7 @@ class Ormawa extends Model
         'singkatan',
         'jurusan',
         'logo_ormawa',
+        'status'
     ];
 
     public function pengguna()

@@ -1,4 +1,4 @@
-<div class=" left-0 right-0 ml-4 md:ml-16 lg:ml-36 mt-4 md:mt-16 lg:16 ">
+<div class=" left-0 right-0 ml-4 md:ml-16 lg:ml-16 mt-4 md:mt-16 lg:16 ">
     <div class="w-full max-w-screen-lg">
         <div
             class="w-5/6 md:w-2/5 lg:w-9/12 h-auto bg-customWhite border border-customBlue rounded-md mx-auto shadow-xl">
@@ -14,6 +14,7 @@
                 </label>
                 <input id="{{ $inputId }}" name="{{ $inputId }}"type="file" class="hidden" />
             </div>
+            
             <div id={{ $loadingId }}
                 class="mt-4 mb-4 w-10/12 h-14 md:h-16 lg:h-20 rounded-md bg-white border border-customBlack opacity-75 mx-auto flex flex-row items-center justify-center relative">
                 <i class="fas fa-file-alt fa-2x md:fa-3x lg:fa-4x text-customBlack ml-2 md:ml-4"></i>

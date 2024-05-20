@@ -13,7 +13,9 @@ class Superadmin extends Model
     protected $table = 'tbl_superadmin';
 
     protected $fillable = [
+        'nama_superAdmin',
         'id_pengguna',
+        'status'
     ];
 
     public function user()

@@ -33,57 +33,63 @@ class OrmawaService {
     }
 
     public function update(Request $request, $id)
-    {
-        $ormawa = Ormawa::findOrFail($id);
-        // dd($ormawa);
+{
+    $ormawa = Ormawa::findOrFail($id);
+    // dd($ormawa);
 
-        // Validasi input
-        $request->validate([
-            'nama_ormawa' => 'required|string|max:255',
-            'singkatan_ormawa' => 'required|string|max:10',
-            'jenis_ormawa' => 'required|string|max:50',
-            'jurusan' => 'required|string|max:100',
-            'logo_ormawa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    // dd($request->all());
 
-        // dd($request->all());
+    // Validasi input
+    $request->validate([
+        'nama_ormawa' => 'required|string|max:255',
+        'singkatan_ormawa' => 'required|string|max:10',
+        'jenis_ormawa' => 'required|string|max:50',
+        // 'jurusan' => 'required|string|max:100',
+        'logo_ormawa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'jumlah_dana' => 'required|string',
+    ]);
 
-        // Perbarui data ormawa dengan data yang diterima dari formulir
-        $ormawa->nama_ormawa = $request->nama_ormawa;
-        $ormawa->singkatan = $request->singkatan_ormawa;
-        $ormawa->jenis_ormawa = $request->jenis_ormawa;
-        $ormawa->jurusan = $request->jurusan;
+    // dd($request->all());
 
-        // Jika ada file gambar yang diunggah, simpan gambar baru
-        if ($request->hasFile('logo_ormawa')) {
-            // Menghapus gambar lama jika ada
-            if ($ormawa->logo_ormawa) {
-                File::delete(public_path($ormawa->logo_ormawa));
-            }
-    
-            // Simpan gambar baru ke direktori public/ormawa
-            $logo = $request->file('logo_ormawa');
-            $logoPath = 'ormawa/'. $logo->getClientOriginalName();
-            $logo->move(public_path('ormawa'), $logoPath);
-    
-            // Simpan path gambar baru
-            $ormawa->logo_ormawa = $logoPath;
-        } 
-        
-        // dd($ormawa);
+    // Perbarui data ormawa dengan data yang diterima dari formulir
+    $ormawa->nama_ormawa = $request->nama_ormawa;
+    $ormawa->singkatan = $request->singkatan_ormawa;
+    $ormawa->jenis_ormawa = $request->jenis_ormawa;
+    $ormawa->jurusan = $request->jurusan;
 
-        // Simpan perubahan
-        $ormawa->save();
+    // Jika ada file gambar yang diunggah, simpan gambar baru
+    if ($request->hasFile('logo_ormawa')) {
+        // Menghapus gambar lama jika ada
+        if ($ormawa->logo_ormawa) {
+            File::delete(public_path($ormawa->logo_ormawa));
+        }
+
+        // Simpan gambar baru ke direktori public/ormawa
+        $logo = $request->file('logo_ormawa');
+        $logoPath = 'ormawa/' . $logo->getClientOriginalName();
+        $logo->move(public_path('ormawa'), $logoPath);
+        // Simpan path gambar baru
+        $ormawa->logo_ormawa = $logoPath;
+    }
+
+    // dd($ormawa);
+
+    // Simpan perubahan
+    $ormawa->save();
     // dd($id_proposal_kegiatan);
 
-    // Simpan data ke tabel tbl_monitoring_kegiatan
-    MonitoringKegiatan::create([
-    'id_ormawa' => $ormawa->id, // Menggunakan id_ormawa dari objek $ormawa
-    'jumlah_dana' => str_replace(['Rp ', '.'], '', $request->jumlah_dana), // Simpan nilai tanpa format Rupiah
-]);
+    // Simpan atau perbarui data ke tabel tbl_monitoring_kegiatan
+    MonitoringKegiatan::updateOrCreate(
+        ['id_ormawa' => $ormawa->id], // Condition to check for existing record
+        ['jumlah_dana' => str_replace(['Rp ', '.'], '', $request->jumlah_dana)] // Data to update or create
+    );
 
-        return view('Kemahasiswaan.ormawa.edit', compact('ormawa'));
-    }
+    // Debugging MonitoringKegiatan
+    // dd($monitoringKegiatan);
+
+    return redirect()->route('edit.Ormawa', ['id' => $ormawa->id]);
+}
+
 
     public function create()
     {
@@ -125,6 +131,7 @@ public function store(Request $request)
     $ormawa->singkatan = $request->singkatan_ormawa;
     $ormawa->jenis_ormawa = $request->jenis_ormawa;
     $ormawa->jurusan = $request->jurusan;
+    $ormawa->status = 'Aktif';
 
     // Simpan gambar baru ke direktori public/ormawa
     if ($request->hasFile('logo_ormawa')) {
@@ -144,13 +151,13 @@ public function store(Request $request)
         $ormawaPembina->id_pembina = $id_pembina;
         $ormawaPembina->tanggal_mulai = $request->tanggal_mulai;
         $ormawaPembina->tanggal_selesai = $request->tanggal_selesai;
-        // Anda mungkin perlu mengganti nilai default dengan nilai yang sesuai
-        $ormawaPembina->id_pengurus_ormawa = 1;
+        $ormawaPembina->id_pengurus_ormawa = null; // Explicitly set to null
         $ormawaPembina->save();
     }
 
     return redirect()->route('editOrmawa.index');
 }
+
 
 
 

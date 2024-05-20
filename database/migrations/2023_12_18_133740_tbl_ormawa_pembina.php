@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_ormawa');
             $table->foreignId('id_pembina');
-            $table->foreignId('id_pengurus_ormawa');
+            $table->foreignId('id_pengurus_ormawa')->nullable();
             $table->date('tanggal_mulai')->nullable();
             $table->date('tanggal_selesai')->nullable();
             $table->timestamps();

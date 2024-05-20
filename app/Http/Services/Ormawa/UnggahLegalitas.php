@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Ormawa;
 
+use App\Models\Ormawa;
 use App\Models\OrmawaPembina;
 use App\Models\PengajuanLegalitas;
 use Illuminate\Http\Request;
@@ -14,9 +15,13 @@ class UnggahLegalitas
     public function index()
 {
     $user = Auth::user();
+    // dd($user);
+
+    $ormawa = $user->ormawa->first();
+    // dd($ormawa);
 
     // Cek apakah pengguna merupakan pembina ormawa
-    $ormawaPembina = $user->ormawaPembina->first();
+    $ormawaPembina = $ormawa->ormawaPembina->first();
     // dd($ormawaPembina);
 
     // Dapatkan pengajuan legalitas yang terkait dengan pengguna
@@ -66,6 +71,8 @@ class UnggahLegalitas
     public function store(Request $request)
     {
         // Validasi file yang diunggah
+
+        // dd($request->all());
         $request->validate([
             'files.*' => 'required|file|max:5120',
         ]);
@@ -96,17 +103,31 @@ class UnggahLegalitas
 
         // Dapatkan ID pengguna yang sedang login
         $userId = Auth::id();
-        // dd($userId);
 
-        // Cari data OrmawaPembina yang sesuai dengan ID pengguna yang sedang login
-        $pivot = OrmawaPembina::where('id_ormawa', $userId)->first();
+// Dapatkan data Ormawa terkait dengan pengguna yang sedang login
+        $ormawa = Ormawa::whereHas('pengguna', function($query) use ($userId) {
+            $query->where('id', $userId);
+        })->first();
 
-        if (!$pivot) {
-            return redirect()->back()->with('error', 'Tidak dapat menemukan data OrmawaPembina yang sesuai.');
+        if ($ormawa) {
+            // Gunakan ID Ormawa untuk mencari data OrmawaPembina
+            $pivot = OrmawaPembina::where('id_ormawa', $ormawa->id)->first();
+            // dd($pivot);
+            
+            if ($pivot) {
+                // Data OrmawaPembina ditemukan
+                // dd($pivot);
+            } else {
+                // Tidak ada data OrmawaPembina yang terkait dengan Ormawa
+                return redirect()->back()->with('error', 'Tidak dapat menemukan data OrmawaPembina yang sesuai.');
+            }
+        } else {
+            // Tidak dapat menemukan data Ormawa terkait dengan pengguna yang sedang login
+            return redirect()->back()->with('error', 'Tidak dapat menemukan data Ormawa yang sesuai.');
         }
 
+
         // Variabel untuk memeriksa apakah semua file telah diunggah
-        $allFilesUploaded = false;
 
         // Iterasi melalui file yang diunggah
         foreach ($listFile as $index => $fileName) {
