@@ -1,11 +1,11 @@
 @extends('Ormawa.Components.layout')
 
 @section('content')
-    <div class="flex flex-col items-center justify-center my-8 ml-4 md:ml-16 lg:ml-36 mr-4 mt-36">
-        <div class="flex items-center bg-blue-500 text-white w-full md:w-9/12 h-20 shadow-lg">
-            <p class="text-base md:text-lg font-bold ml-4">Daftar Proposal Legalitas</p>
+    <div class="flex flex-col items-center justify-center ml-4 md:ml-16 lg:ml-20 mt-16 mr-16">
+        <div class="flex items-center bg-customBlue text-white w-full h-20 shadow-lg">
+            <p class="text-2xl md:text-2xl font-bold ml-4">Daftar SK Legalitas</p>
         </div>
-        <div class="bg-customWhite w-full md:w-9/12 shadow-md mt-2 border border-gray-500 overflow-x-auto">
+        <div class="bg-customWhite w-full shadow-md mt-2 border border-customBlack overflow-x-auto">
             <div class="flex flex-row justify-between p-2 md:p-4">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nomor SK</p>
@@ -18,10 +18,10 @@
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Operasi</p>
             </div>
         </div>
-        <div class="bg-customWhite w-full md:w-9/12 shadow-md border border-gray-500 overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customWhite w-full shadow-md overflow-x-auto">
                 @foreach ($skLegalitasData as $index => $skLegalitas)
-                    <div class="flex flex-row justify-between w-full">
+                <div class="flex flex-row justify-between p-2 md:p-4 border border-customBlack">
+                    <div class="flex flex-row justify-between w-full items-center">
                         <p class="text-center w-1/8 text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $skLegalitas['nomor_sk'] }}</p>
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $skLegalitas['tanggal_terbit'] }}</p>
@@ -29,16 +29,18 @@
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $skLegalitas['tanggal_berlaku_selesai'] }}</p>
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $skLegalitas['file_sk'] }}</p>
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">Lainnya</p>
-                        <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $skLegalitas['status'] }}</p>
-                        <p class="text-center w-1/12 text-xs md:text-sm mr-1">
+                        <p class="justify-center text-center w-1/12 text-xs md:text-sm flex items-center font-bold">
+                            <span class="rounded-full px-3 py-3 border bg-red-600 text-customWhite inline-block min-w-min max-w-full">{{ $skLegalitas['status'] }}</span>
+                        </p> 
+                        <p class="text-center w-1/12 text-2xl">
                         <!-- Unduh dengan ikon -->
                         <a href='#' target="_blank" title="Unduh" class="mx-2">
-                            <i class="fas fa-download"></i>
+                            <i class="fas fa-download text-2xl"></i>
                         </a>
-                        
+                        |
                         <!-- Hapus dengan ikon -->
-                        <a href="#" title="Hapus" class="mx-2 border-l pl-2 border-gray-300">
-                            <i class="fas fa-trash"></i>
+                        <a href="#" title="Hapus" class="mx-2  border-gray-300">
+                            <i class="fas fa-trash text-2xl"></i>
                         </a>
                     </p>
                     </div>

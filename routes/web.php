@@ -88,6 +88,8 @@ Route::prefix('/ormawa')->middleware('auth')->group(function () {
     route::get('/legalitas/daftarRevisi', [PengajuanLegalitasController::class, 'listRevisi'])->name('listRevisi');
     route::get('/legalitas/revision', [PengajuanLegalitasController::class, 'revision'])->name('revision');
     route::patch('/legalitas/revisi', [PengajuanLegalitasController::class, 'update'])->name('revisi.pengajuan');
+    route::get('/legalitas/disetujui', [PengajuanLegalitasController::class, 'disetujui'])->name('disetujui.pengajuan');
+
 
     // Proposal Kegiatan
     Route::get('/proposalKegiatan/beranda', [ProposalKegiatanOrmawaController::class, 'index'])->name('index.proposalKegiatan');

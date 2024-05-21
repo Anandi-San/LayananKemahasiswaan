@@ -1,6 +1,7 @@
 @extends('Ormawa.Components.layout')
 @include('Ormawa.Components.stepperPengajuan')
-<title>Daftar Revisi</title>
+
+<title>Disetujui</title>
 
 @section('content')
 <div class="flex flex-col items-center justify-center mt-12 ml-4 md:ml-16 lg:ml-20 mr-16">
@@ -21,7 +22,7 @@
             <p class="text-center text-xs w-1/12 md:text-sm">Operasi</p>
         </div>
     </div>
-    <div class="bg-customWhite w-full  border border-customBlack overflow-x-auto">
+    <div class="bg-customWhite w-full shadow-md border border-customBlack overflow-x-auto">
         @foreach($legalitas as $index => $item)
             <div class="flex flex-row justify-between p-2 md:p-4 items-center">
                 <p class="text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
@@ -33,14 +34,12 @@
                 <p class="text-center text-xs w-1/12 md:text-sm mr-1">{{ $item->daftar_sarana_prasarana }}</p>
                 <p class="text-center text-xs w-1/12 md:text-sm mr-1">Daftar Anggota Ormawa</p>
                 <p class="text-center text-xs w-1/12 md:text-sm mr-1">{{ $item->GBHK }}</p>
-                <p class="text-center text-xs w-1/12 md:text-2xl">
-                <div class=" flex items-center justify-center w-1/12">
-                <a href="{{ route ('revision') }}" class="px-3 py-3 rounded-full bg-red-600 text-white">
-                    <i class="fas fa-sync "></i>
-                    <span class="ml-2">Update</span>
-                </a>
+                <div class="flex items-center justify-center w-1/12">
+                    <a href="{{ route('revision') }}" class="px-3 py-3 rounded-full bg-customBlue text-white flex items-center justify-center">
+                        <i class="fas fa-download"></i>
+                        <span class="ml-2">Unduh</span>
+                    </a>
                 </div>
-                </p>
             </div>
         @endforeach
     </div>

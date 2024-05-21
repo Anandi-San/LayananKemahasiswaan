@@ -20,7 +20,7 @@
                 oninput="handleSearch()"
             />
         </label>
-        <a href="#" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 mr-4 cursor-pointer text-customWhite font-medium no-underline">
+        <a href="{{ route('editSKlegalitas.create') }}" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 mr-4 cursor-pointer text-customWhite font-medium no-underline">
             <i class="fas fa-plus text-customWhite mr-2"></i>
             <span>Tambah</span>
         </a>

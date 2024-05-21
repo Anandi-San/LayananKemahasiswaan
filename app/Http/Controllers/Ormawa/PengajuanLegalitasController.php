@@ -47,4 +47,9 @@ class PengajuanLegalitasController extends Controller
     {
         return $this->unggahLegalitas->update($request);  
     }
+
+    public function disetujui()
+    {
+        return $this->unggahLegalitas->disetujui();  
+    }
 }

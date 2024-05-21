@@ -35,8 +35,10 @@ class UnggahLegalitas
                 return redirect()->route('waitingrevision');
             case 'Revisi Kemahasiswaan':
                 return redirect()->route('listRevisi');
-            case 'Telah Direvisi':
+            case 'Telah Dorevisi':
                 return redirect()->route('revision');
+            case 'Disetujui';
+                return redirect()->route('disetujui.pengajuan');
         }
     }
 
@@ -55,11 +57,19 @@ class UnggahLegalitas
 
     public function ListRevisi()
     {
-        $data = [
-            'content' => 'ormawa/legalitas/index',
-        ];
-        return view('Ormawa/UnggahPengajuanLegalitas/listRevisi', $data);
+        $user = Auth::user();
+
+        $ormawa = $user->ormawa->first();
+
+        // Cek apakah pengguna merupakan pembina ormawa
+        $ormawaPembina = $ormawa->ormawaPembina->first();
+
+        // Dapatkan pengajuan legalitas yang terkait dengan pengguna
+        $legalitas = $ormawaPembina ? $ormawaPembina->pengajuanLegalitas : collect([]);
+
+        return view('Ormawa/UnggahPengajuanLegalitas/listRevisi', ['legalitas' => $legalitas]);
     }
+
     public function Revision()
     {
         $data = [
@@ -248,5 +258,21 @@ class UnggahLegalitas
     // Jika semua file telah diunggah, arahkan ke halaman berikutnya
     return redirect()->route('waitingrevision');
 }
+
+    public function disetujui()
+    {
+        $user = Auth::user();
+
+        $ormawa = $user->ormawa->first();
+
+        // Cek apakah pengguna merupakan pembina ormawa
+        $ormawaPembina = $ormawa->ormawaPembina->first();
+
+        // Dapatkan pengajuan legalitas yang terkait dengan pengguna
+        $legalitas = $ormawaPembina ? $ormawaPembina->pengajuanLegalitas : collect([]);
+        // dd($legalitas);
+
+        return view('Ormawa/UnggahPengajuanLegalitas/disetujui', ['legalitas' => $legalitas]);
+    }
 
 }

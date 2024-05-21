@@ -16,7 +16,6 @@ class ProposalKegiatan {
     $pengajuanLegalitas = PengajuanLegalitas::whereHas('ormawaPembina.ormawa.pengguna', function ($query) use ($userId) {
         $query->where('id', $userId);
     })->first();
-    // dd($pengajuanLegalitas);
 
     if (!$pengajuanLegalitas || $pengajuanLegalitas->status !== 'Disetujui') {
         return view('Ormawa/ProposalKegiatan/tidakada');
