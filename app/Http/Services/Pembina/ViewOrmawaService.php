@@ -32,17 +32,20 @@ class ViewOrmawaService {
     // Langkah 5: Ambil data Pengurus Ormawa dari tabel tbl_pengurus_ormawa berdasarkan ID Ormawa
     $pengurusOrmawas = PengurusOrmawa::whereIn('id_ormawa', $ormawaIds)->get();
 
+    // Jika tidak ada data Pengurus Ormawa, kembalikan view 'nothing'
+    if ($pengurusOrmawas->isEmpty()) {
+        return view('Pembina.ViewOrmawa.nothing');
+    }
+
     // Langkah 6: Ambil data Proposal Kegiatan dari tabel tbl_proposal_kegiatan berdasarkan ID Ormawa
     $proposalKegiatans = Proposal_Kegiatan::whereHas('skLegalitas.pengajuanLegalitas.ormawaPembina', function ($query) use ($ormawaIds) {
         $query->whereIn('id_ormawa', $ormawaIds);
     })
     ->with(['skLegalitas.pengajuanLegalitas.ormawaPembina', 'skLegalitas.pengajuanLegalitas', 'skLegalitas'])
     ->get();
-    // dd($proposalKegiatans);
 
     // Langkah 7: Ambil data Monitoring Kegiatan berdasarkan ID Proposal Kegiatan
     $monitoringKegiatans = MonitoringKegiatan::whereIn('id_proposal_kegiatan', $proposalKegiatans->pluck('id'))->get();
-    // dd($monitoringKegiatans);
 
     // Gabungkan data Ormawa, Pengurus Ormawa, dan Monitoring Kegiatan
     $ormawaData = [];
@@ -50,17 +53,14 @@ class ViewOrmawaService {
         $ormawaData[] = [
             'ormawa' => $ormawa,
             'pengurus' => $pengurusOrmawas->where('id_ormawa', $ormawa->id)->first(),
-            // 'proposal_kegiatan' => $proposalKegiatans,
-            'monitoring_kegiatan' => $monitoringKegiatans,
+            'monitoring_kegiatan' => $monitoringKegiatans->where('id_proposal_kegiatan', $proposalKegiatans->pluck('id'))->all(),
         ];
-        // dd($ormawaData);
     }
 
     // Kembalikan data Ormawa, Pengurus Ormawa, Proposal Kegiatan, dan Monitoring Kegiatan
-    return [
-        'ormawaData' => $ormawaData,
-    ];
+    return view('Pembina.ViewOrmawa.index', compact('ormawaData'));
 }
+
 
     public function store()
     {

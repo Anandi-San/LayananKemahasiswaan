@@ -17,10 +17,7 @@ class LpjKegiatanPembinaController extends Controller
 
     public function index()
     {
-        $lpjKegiatanData = $this->lpjKegiatanService->index();
-    // dd($proposalKegiatanData);
-    
-    return view('Pembina.LpjKegiatan.index', compact('lpjKegiatanData'));
+        return $this->lpjKegiatanService->index();
     }
 
     /**

@@ -2,11 +2,11 @@
 <title>Pengajuan Legalitas</title>
 
 @section('content')
-<div class="flex flex-col items-center justify-center mt-32 ml-4 md:ml-16 lg:ml-36 mr-4">
-    <!-- Bagian Header -->
-    <div class="flex items-center justify-between bg-blue-500 text-white w-full md:w-full h-20 shadow-lg">
-        <p class="text-base md:text-lg font-bold ml-4">Pengajuan Legalitas</p>
-        <div class="flex items-center bg-white rounded-lg px-4 py-2 relative h-10 mr-4">
+<div class="flex flex-col mt-10  ml-4 md:ml-16 lg:ml-20 mr-16">
+        <p class="font-bold text-3xl text-customBlack">Pengajuan Legalitas</p>
+        <p class="font-bold text-2xl mb-2 text-customBlack">Daftar Pengajuan Legalitas</p>
+    <div class="flex items-center justify-end text-white w-full md:w-full h-16 mt-8">
+        <label class="flex items-center bg-white rounded-lg px-4 py-2 relative h-10 mr-4 ml-4 border border-customBlack">
             <span class="absolute left-0 flex items-center justify-center w-10 h-10">
                 <i class="fas fa-search text-customBlack"></i>
             </span>
@@ -14,15 +14,16 @@
                 type="text"
                 placeholder="Search"
                 id="searchInput"
-                class="rounded-lg flex-grow px-2 py-2 pl-10 focus:outline-none focus:shadow-outline text-black"
+                class="rounded-lg flex-grow px-2 pl-10 focus:outline-none focus:shadow-outline text-black"
+                style="outline: none"
                 oninput="handleSearch()"
             />
-        </div>
+        </label>
     </div>
     <!-- Header kolom -->
-<div class="bg-customWhite w-full md:w-full shadow-md border custom-black overflow-x-auto">
-    <div class="bg-customWhite w-full shadow-md mt-2 border border-customBlack">
-        <div class="flex flex-row justify-between p-2 md:p-4">
+{{-- <div class="bg-customWhite w-full md:w-full shadow-md border custom-black overflow-x-auto"> --}}
+    <div class="bg-customBlue w-full shadow-md border border-customBlack">
+        <div class="flex flex-row justify-between p-2 md:p-4 text-customWhite">
             <p class="text-center w-1/8 text-xs md:text-sm">#</p>
             <p class="text-center w-1/12 text-xs md:text-sm">Nama Ormawa</p>
             <p class="text-center w-1/12 text-xs md:text-sm">Proposal Legalitas</p>
@@ -82,16 +83,16 @@
             </p>
             <p class="text-center w-1/12 text-xs md:text-xl">
                 <a href="#" title="Setujui">
-                    <i class="fas fa-check"></i> <!-- Ikon centang -->
+                    <i class="fas fa-check text-customBlue"></i> <!-- Ikon centang -->
                 </a>
                 |
                 <a href="#" title="Hapus">
-                    <i class="fas fa-trash"></i> <!-- Ikon tong sampah -->
+                    <i class="fas fa-trash text-red-500"></i> <!-- Ikon tong sampah -->
                 </a>
             </p>
         </div>
         @endforeach
-    </div>
+    {{-- </div> --}}
     </div>
     @include('Ormawa.Components.footer2')
 </div>

@@ -41,9 +41,11 @@ class SKLegalitasService {
                         // Tambahkan kolom lain sesuai kebutuhan
                     ];
                 }
-                // dd($skLegalitasData);
             }
-            // dd($skLegalitasData);
+        }
+
+        if(empty($skLegalitasData)) {
+            return view('Pembina.SKLegalitas.nothing');
         }
 
         // Return data yang dapat ditampilkan pada view

@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <title>Pembina</title>
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="overflow-hidden">
@@ -14,31 +19,6 @@
         <main class="overflow-hidden overflow-y-scroll">
             @yield('content')
         </main>
-        {{-- <footer id="footer"
-        class="flex flex-row justify-end items-center bg-customBlack w-screen h-fit text-white px-8 py-2.5 mt-8">
-        <div class="w-80 pr-20">
-            <p class="font-bold text-[10px]">Lokasi</p>
-            <p class="font-bold text-[10px] text-gray-500">Lorem Ipsum is simply dummy text of the printing and
-                typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-        </div>
-
-        <div class="pr-20">
-            <p class="font-bold text-[10px]">Telepon</p>
-            <p class="font-bold text-[10px] text-gray-500 pb-2">+000000</p>
-
-            <p class="font-bold text-[10px]">Email</p>
-            <p class="font-bold text-[10px] text-gray-500">@itk.ac.id</p>
-        </div>
-
-        <div class="flex flex-col items-end pr-8">
-            <p class="font-bold text-[12px]">Sistem Manajemen Informasi</p>
-            <p class="font-bold text-[12px]">Layanan Kemahasiswaan</p>
-            <p class="font-bold text-[12px] text-customLightBlue">Institut Teknologi Kalimantan</p>
-        </div>
-
-        <img src="{{ asset('images/logo_itk.png') }}" alt="Logo ITK" class="h-20">
-    </footer> --}}
 
         <script>
             function adjustContentMargin() {
@@ -53,12 +33,11 @@
     </div>
 
     <aside id="sidebar"
-        class="absolute group top-0 left-0 bg-white w-30 h-screen p-8 
-        rounded-r-[32px] hover:w-72 border-r-2 hidden lg:flex flex-col overflow-y-auto">
+        class="absolute top-0 left-0 bg-white w-72 h-screen p-8 rounded-r-[32px] border-r-2 flex-col overflow-y-auto hidden lg:flex">
         <div class="flex flex-col justify-center">
-            <div class="flex flex-row items-center">
+            <div class="flex flex-row items-center mt-4">
                 <img src="{{ asset('images/logo_itk.png') }}" alt="Logo ITK" class="size-12 pr-2">
-                <div class="text-start lg:hidden lg:group-hover:block">
+                <div class="text-start">
                     <p class="font-bold text-base">SIM Layanan Kemahasiswaan</p>
                 </div>
             </div>
@@ -68,7 +47,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <i class="fas fa-home mr-2 fa-2x"></i>
                     </div>
-                    <div class="text-start lg:hidden lg:group-hover:block ml-2">
+                    <div class="text-start ml-2">
                         <p class="font-bold text-base">Beranda</p>
                     </div>
                 </a>
@@ -77,7 +56,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <i class="fa-solid fa-file-lines fa-2x mr-2"></i>
                     </div>
-                    <div class="text-start lg:hidden lg:group-hover:block ml-2 items">
+                    <div class="text-start ml-2 items">
                         <p class="font-bold text-base items">Proposal Kegiatan</p>
                     </div>
                 </a>
@@ -85,7 +64,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <i class="fa-solid fa-file-circle-exclamation fa-2x mr-2"></i>
                     </div>
-                    <div class="text-start lg:hidden lg:group-hover:block ml-2">
+                    <div class="text-start ml-2">
                         <p class="font-bold text-base">LPJ Kegiatan</p>
                     </div>
                 </a>
@@ -93,7 +72,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <i class="fa-solid fa-note-sticky fa-2x mr-2"></i>
                     </div>
-                    <div class="text-start lg:hidden lg:group-hover:block ml-2">
+                    <div class="text-start ml-2">
                         <p class="font-bold text-base">SK Legalitas</p>
                     </div>
                 </a>
@@ -101,7 +80,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <i class="fa-solid fa-people-group fa-2x mr-2"></i>
                     </div>
-                    <div class="text-start hidden group-hover:block ml-2">
+                    <div class="text-start ml-2">
                         <p class="font-bold text-base">Ormawa</p>
                     </div>
                 </a>
@@ -109,7 +88,7 @@
                     <div class="bg-customWhite rounded-full w-10">
                         <img src="{{ asset('images/logo_itk.png') }}" alt="User Icon" class="w-8 h-8 rounded-full mr-2">
                     </div>
-                    <div class="text-start lg:hidden lg:group-hover:block ml-2">
+                    <div class="text-start ml-2">
                         <p class="font-bold text-base">User</p>
                     </div>
                 </a>
@@ -121,17 +100,16 @@
                         <div class="bg-customWhite rounded-full w-10">
                             <i class="fas fa-sign-out-alt mr-2 fa-2x"></i>
                         </div>
-                        <div class="text-start lg:hidden lg:group-hover:block ml-4">
+                        <div class="text-start ml-4">
                             <p class="font-bold text-base">Logout</p>
                         </div>
                     </button>
                 </form>
             </div>
     </aside>
-    <div id="sidebarToggle" class="lg:hidden absolute top-4 right-4 cursor-pointer">
+    <div id="sidebarToggle" class=" absolute top-4 left-4 cursor-pointer">
         <i class="fas fa-bars fa-2x text-customBlack"></i>
     </div>
-
 
     <script>
         // JavaScript

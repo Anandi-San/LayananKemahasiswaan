@@ -99,5 +99,5 @@
     </div>
 </form>
 
-@include('Ormawa.Components.footer2')
+@include('Ormawa.Components.footer')
 @endsection

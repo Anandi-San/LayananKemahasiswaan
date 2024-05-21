@@ -8,6 +8,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
     <title>Ormawa</title>
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="overflow-hidden">
@@ -27,13 +32,9 @@
         </script>
     </div>
 
-
-
-    
-    <aside id="sidebar" class="absolute top-0 left-0 bg-white w-72 h-screen p-8 rounded-r-[32px] border-r-2 flex flex-col overflow-y-auto">
+    <aside id="sidebar" class="absolute top-0 left-0 bg-white w-72 h-screen p-8 rounded-r-[32px] border-r-2 flex-col overflow-y-auto hidden lg:flex">
         <div class="flex flex-col justify-center">
-            
-            <div class="flex flex-row items-center mt-4">
+            <div class="flex flex-row items-center mt-5">
                 <img src="{{ asset('images/logo_itk.png') }}" alt="Logo ITK" class="size-12 pr-2">
                 <div class="text-start">
                     <p class="font-bold text-base">SIM Layanan Kemahasiswaan</p>

@@ -2,10 +2,13 @@
 <title>SK Legalitas</title>
 
 @section('content')
-<div class="flex flex-col items-center justify-center mt-32 ml-4 md:ml-16 lg:ml-36 mr-4">
-    <div class="flex items-center justify-between bg-blue-500 text-white w-full md:w-11/12 h-20 shadow-lg">
-        <p class="text-base md:text-lg font-bold ml-4">Daftar SK Legalitas</p>
-        <div class="flex items-center bg-white rounded-lg px-4 py-2 relative h-10 mr-4 ">
+<div class="flex flex-col mt-12 ml-4 md:ml-16 lg:ml-20 mr-16">
+    <div class="ml-4">
+        <p class="font-bold text-3xl text-customBlack">LPJ Kegiatan</p>
+        <p class="font-bold text-2xl mb-2 text-customBlack">Daftar LPJ Kegiatan</p>
+        </div>
+    <div class="flex items-center justify-between text-white w-full md:w-full h-16 mt-8">
+        <label class="flex items-center bg-white rounded-lg px-4 py-2 relative h-10 ml-4 border border-customBlack ">
             <span class="absolute left-0 flex items-center justify-center w-10 h-10">
                 <i class="fas fa-search text-customBlack"></i>
             </span>
@@ -13,13 +16,17 @@
                 type="text"
                 placeholder="Search"
                 id="searchInput"
-                class="rounded-lg flex-grow px-2 py-2 pl-10 focus:outline-none focus:shadow-outline text-black"
+                class="rounded-lg flex-grow px-2 pl-10 focus:outline-none focus:shadow-outline text-black"
                 oninput="handleSearch()"
             />
-        </div>
+        </label>
+        <a href="#" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 mr-4 cursor-pointer text-customWhite font-medium no-underline">
+            <i class="fas fa-plus text-customWhite mr-2"></i>
+            <span>Tambah</span>
+        </a>
     </div>
-        <div class="bg-customWhite w-full md:w-11/12 shadow-md mt-2 border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customBlue w-full md:w-full border border-customBlack  overflow-x-auto">
+            <div class="flex flex-row justify-between p-2 md:p-4 text-customWhite">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nama Ormawa</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nomor SK</p>
@@ -31,7 +38,7 @@
                 <p class="text-center w-36 text-xs md:text-sm mr-1">Operasi</p>
             </div>
         </div>
-        <div class="bg-customWhite w-full md:w-11/12 shadow-md border border-customBlack overflow-x-auto">
+        <div class="bg-customWhite w-full md:w-11/12 shadow-md overflow-x-auto">
                 @foreach ($skLegalitas as $index => $legalitas)
                 <div class="flex flex-row justify-between p-2 md:p-4 border-b border-customBlack">
                     <p class="text-center w-1/8 text-xs md:text-sm mr-1">{{ $index + 1 }}</p>

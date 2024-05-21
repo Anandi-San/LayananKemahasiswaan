@@ -65,9 +65,12 @@ public function index()
                 }
             }
         }
+        if (empty($lpjKegiatanData)) {
+            return view('Pembina.LpjKegiatan.nothing');
+        }
 
     // Kembalikan data `lpjKegiatan` dalam bentuk array biasa
-    return $lpjKegiatanData;
+    return view('Pembina.LpjKegiatan.index', compact('lpjKegiatanData'));
 }
 
 

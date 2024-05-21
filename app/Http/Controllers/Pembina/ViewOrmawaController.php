@@ -18,11 +18,7 @@ class ViewOrmawaController extends Controller
     public function index()
     {
 
-        $ormawas = $this->viewOrmawaService->index();
-        // dd($ormawas);
-
-        // Tampilkan view dan pass data
-        return view('Pembina.ViewOrmawa.index', $ormawas);
+        return $this->viewOrmawaService->index();
     }
 
     /**

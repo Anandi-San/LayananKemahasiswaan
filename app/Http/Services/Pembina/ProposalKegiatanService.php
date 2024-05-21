@@ -9,43 +9,55 @@ use Illuminate\Support\Facades\Auth;
 
 class ProposalKegiatanService {
 
-public function index() {
-    // Ambil pengguna yang sedang login
-    $user = Auth::user();
+    public function index() {
+        // Ambil pengguna yang sedang login
+        $user = Auth::user();
+        
+        // Temukan Pembina yang terkait dengan pengguna yang login
+        $pembina = Pembina::where('id_pengguna', $user->id)->first();
+        
+        // Periksa apakah Pembina ditemukan
+        if (!$pembina) {
+            return view('Pembina.ProposalKegiatan.nothing');
+        }
+        
+        // Ambil daftar OrmawaPembina yang terkait dengan Pembina
+        $ormawaPembinaList = $pembina->ormawaPembina;
     
-    // Temukan Pembina yang terkait dengan pengguna yang login
-    $pembina = Pembina::where('id_pengguna', $user->id)->first();
+        // Array untuk menampung data Proposal_Kegiatan
+        $proposalKegiatanData = [];
     
-    // Ambil daftar OrmawaPembina yang terkait dengan Pembina
-    $ormawaPembinaList = $pembina->ormawaPembina;
-
-    // Array untuk menampung data Proposal_Kegiatan
-    // $proposalKegiatanData = [];
-
-    // Iterasi melalui OrmawaPembina yang terkait dengan Pembina
-    foreach ($ormawaPembinaList as $ormawaPembina) {
-        // Dapatkan daftar pengajuan legalitas terkait OrmawaPembina
-        $pengajuanLegalitasList = $ormawaPembina->pengajuanLegalitas;
-
-        // Loop melalui daftar pengajuan legalitas
-        foreach ($pengajuanLegalitasList as $pengajuanLegalitas) {
-            // Ambil SK Legalitas terkait pengajuan legalitas
-            $skLegalitas = $pengajuanLegalitas->skLegalitas;
-            // dd($skLegalitas);
-            
-            // Periksa apakah `skLegalitas` memiliki relasi `proposalKegiatan`
-            if ($skLegalitas) {
-                $proposalKegiatan = $skLegalitas->proposalKegiatan;
-                // dd($proposalKegiatan);
-
-                // dd($proposalKegiatanData);
+        // Iterasi melalui OrmawaPembina yang terkait dengan Pembina
+        foreach ($ormawaPembinaList as $ormawaPembina) {
+            // Dapatkan daftar pengajuan legalitas terkait OrmawaPembina
+            $pengajuanLegalitasList = $ormawaPembina->pengajuanLegalitas;
+    
+            // Loop melalui daftar pengajuan legalitas
+            foreach ($pengajuanLegalitasList as $pengajuanLegalitas) {
+                // Ambil SK Legalitas terkait pengajuan legalitas
+                $skLegalitas = $pengajuanLegalitas->skLegalitas;
+                
+                // Periksa apakah `skLegalitas` memiliki relasi `proposalKegiatan`
+                if ($skLegalitas) {
+                    $proposalKegiatan = $skLegalitas->proposalKegiatan;
+                    
+                    // Periksa apakah proposal kegiatan ada
+                    if ($proposalKegiatan) {
+                        $proposalKegiatanData[] = $proposalKegiatan;
+                    }
+                }
             }
         }
+    
+        // Periksa apakah array proposal kegiatan kosong
+        if (empty($proposalKegiatanData)) {
+            return view('Pembina.ProposalKegiatan.nothing');
+        }
+    
+        // Kembalikan data Proposal Kegiatan ke view
+        return view('Pembina.ProposalKegiatan.index', ['proposalKegiatanData' => $proposalKegiatanData]);
     }
-
-    // Kembalikan data Proposal Kegiatan
-    return $proposalKegiatan;
-}
+    
 
 
     

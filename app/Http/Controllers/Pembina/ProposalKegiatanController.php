@@ -17,10 +17,7 @@ class ProposalKegiatanController extends Controller
     public function index()
 {
     // Panggil metode `index` dari `proposalKegiatanService` dan dapatkan data yang dibutuhkan
-    $proposalKegiatanData = $this->proposalKegiatanService->index();
-    // dd($proposalKegiatanData);
-    
-    return view('Pembina.ProposalKegiatan.index', compact('proposalKegiatanData'));
+    return $this->proposalKegiatanService->index();
 }
 
 

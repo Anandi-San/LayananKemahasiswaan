@@ -2,36 +2,34 @@
 <title>Daftar Ormawa</title>
 
 @section('content')
-    <div class="flex flex-col items-center justify-center mt-32 ml-4 md:ml-16 lg:ml-36 mr-4">
-        <div class="items-start justify-start w-9/12">
-        <p class="text-base md:text-2xl font-bold text-customBlack">Daftar Ormawa</p>
+    <div class="flex flex-col mt-16 ml-4 md:ml-16 lg:ml-16 mr-20">
+        <div class="ml-4">
+            <p class="font-bold text-3xl text-customBlack">Daftar Ormawa</p>
         </div>
-        <div class="flex items-center bg-blue-500 text-white w-full md:w-9/12 h-20 shadow-lg">
-            <!-- Search box and add button container -->
+        <div class="items-start justify-start w-full">
+        </div>
+        <div class="flex items-center bg-customWhite text-white w-full md:w-full h-16 mt-8">
             <div class="flex items-center w-full p-4">
-                <!-- Search box container -->
-                <div class="flex items-center w-20 bg-white rounded-lg px-4 py-2 relative h-10">
-                    <!-- Search icon -->
+                <label class="flex items-center  bg-white rounded-lg px-4 py-2 relative border border-customBlack">
                     <span class="absolute left-0 flex items-center justify-center w-10 h-10">
                         <i class="fas fa-search text-customBlack"></i>
                     </span>
-                    <!-- Search input -->
                     <input
                         type="text"
                         placeholder="Search"
                         id="searchInput"
-                        class="rounded-lg flex-grow px-2 py-2 pl-10 focus:outline-none focus:shadow-outline text-black"
+                        class="rounded-lg flex-grow px-2 pl-10 focus:outline-none focus:shadow-outline text-black"
                         oninput="handleSearch()"
                     />
-                </div>
+                </label>
                 
                 
                 <!-- Spacer between search box and add button -->
                 <div class="flex-grow"></div>
                 
                 <!-- Add button container -->
-                <a href="{{ route('editOrmawa.create') }}" class="flex items-center w-36 bg-white rounded-lg px-4 py-2 cursor-pointer text-customBlack font-medium no-underline">
-                    <i class="fas fa-plus text-customBlack mr-2"></i>
+                <a href="{{ route('editOrmawa.create') }}" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 cursor-pointer text-customWhite font-medium no-underline">
+                    <i class="fas fa-plus text-customWhite mr-2"></i>
                     <span>Tambah</span>
                 </a>
                 
@@ -41,8 +39,8 @@
         
         {{-- // container hasil --}}
         <div id="searchResults" class=""></div>
-        <div class="bg-customWhite w-full md:w-9/12 shadow-md border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customBlue w-full md:w-full shadow-md border border-customBlack overflow-x-auto">
+            <div class="flex flex-row justify-between p-2 md:p-4 text-white">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/6 text-xs md:text-sm mr-1">Nama Ormawa</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Pembina</p>
@@ -51,7 +49,7 @@
                 <p class="text-center w-1/6 text-xs md:text-sm mr-1">Operasi</p>
             </div>
         </div>
-        <div class="bg-customWhite w-full md:w-9/12 ">
+        <div class="bg-customWhite w-full md:w-full ">
             @foreach ($ormawaList as $index => $ormawa)
                 <!-- Kotak terpisah untuk setiap item ormawa -->
                 <div class=" bg-customWhite w-full md:w-full shadow-md border border-customBlack overflow-x-auto">

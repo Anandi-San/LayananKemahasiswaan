@@ -47,6 +47,10 @@ class SkLegalitasService {
             // dd($skLegalitasData);
         }
 
+        if(empty($skLegalitasData)){
+            return view('Ormawa/SkLegalitas/nothing');
+        }
+
         // Return data yang dapat ditampilkan pada view
         return view('Ormawa/SkLegalitas/index', ['skLegalitasData' => $skLegalitasData]);
 

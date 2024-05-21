@@ -172,4 +172,3 @@ public function store(Request $request)
         return redirect()->route('editOrmawa.index');
     }
 }
-

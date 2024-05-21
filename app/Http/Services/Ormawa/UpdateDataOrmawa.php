@@ -237,6 +237,10 @@ public function indexKegiatan()
         }
     }
 
+    if(empty($proposalKegiatanOptions)){
+        return view ('Ormawa.UpdateOrmawa.nothingKegiatan');
+    }
+
     // Kembalikan array data proposal kegiatan
     return view('Ormawa/UpdateOrmawa/indexKegiatan', compact('proposalKegiatanOptions'));
 }
@@ -261,11 +265,6 @@ public function indexKegiatan()
 
     // Dapatkan proposal kegiatan berdasarkan ID
     $proposal = Proposal_Kegiatan::findOrFail($id);
-
-    // Jika proposal tidak ditemukan, tampilkan pesan kesalahan
-    if (!$proposal) {
-        dd('Proposal Kegiatan tidak ditemukan');
-    }
 
     // Dapatkan data monitoring kegiatan berdasarkan id_ormawa dan id proposal
     $monitoringKegiatan = MonitoringKegiatan::where('id_ormawa', $ormawa->id)
