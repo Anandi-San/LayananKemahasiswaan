@@ -33,7 +33,7 @@ class UnggahLegalitas
         switch ($legalitas->status) {
             case 'Menunggu':
                 return redirect()->route('waitingrevision');
-            case 'Revisi Kemahasiswaan':
+            case 'RevisiKemahasiswaan':
                 return redirect()->route('listRevisi');
             case 'Telah Dorevisi':
                 return redirect()->route('revision');

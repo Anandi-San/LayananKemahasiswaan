@@ -20,13 +20,13 @@
                 oninput="handleSearch()"
             />
         </label>
-        <a href="{{ route('editSKlegalitas.create') }}" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 mr-4 cursor-pointer text-customWhite font-medium no-underline">
+        <a href="{{ route('editSKlegalitas.create') }}" class="flex items-center w-36 bg-green-500 rounded-lg px-4 py-2 mr-4 cursor-pointer text-customWhite font-medium no-underline">
             <i class="fas fa-plus text-customWhite mr-2"></i>
             <span>Tambah</span>
         </a>
     </div>
-        <div class="bg-customBlue w-full md:w-full border border-customBlack  overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4 text-customWhite">
+        <div class="bg-customBlue w-full md:w-full border border-customBlack h-16 flex items-center">
+            <div class="flex flex-row justify-between p-3 text-customWhite w-full items-center">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nama Ormawa</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nomor SK</p>
@@ -38,9 +38,9 @@
                 <p class="text-center w-36 text-xs md:text-sm mr-1">Operasi</p>
             </div>
         </div>
-        <div class="bg-customWhite w-full md:w-11/12 shadow-md overflow-x-auto">
+        <div class="bg-customWhite w-full shadow-md overflow-x-auto">
                 @foreach ($skLegalitas as $index => $legalitas)
-                <div class="flex flex-row justify-between p-2 md:p-4 border-b border-customBlack">
+                <div class="flex flex-row justify-between p-3 border border-customBlack items-center">
                     <p class="text-center w-1/8 text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $legalitas->pengajuanLegalitas->ormawaPembina->ormawa->nama_ormawa }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $legalitas->nomor_SK }}</p>
@@ -53,21 +53,14 @@
                         </a>
                     </p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">
-                        <span class="rounded-lg border px-2 py-1 bg-customBlack text-white">{{ $legalitas->status }}</span></p>
-                    <p class="text-center w-36 text-xs md:text-sm">
+                        <span class="rounded-lg border px-3 py-3 bg-customBlue text-white">{{ $legalitas->status }}</span></p>
+                    <p class="text-center w-36 text-xs md:text-2xl">
                         <!-- Unduh dengan ikon -->
                         <a href="{{ asset('storage/sk_legalitas' . $legalitas->sk_legalitas) }}" target="_blank" title="Unduh" class="mx-2">
                             <i class="fas fa-download"></i>
-                        </a>
-                        
-                        <!-- Tambah dengan ikon -->
-                        <a href="{{ route('editSKlegalitas.create') }}" title="Tambah" class="mx-2 border-l pl-2 border-gray-300">
-                            <i class="fas fa-plus"></i>
-                        </a>
-                        
-                        <!-- Hapus dengan ikon -->
-                        <a href="#" title="Hapus" class="mx-2 border-l pl-2 border-gray-300">
-                            <i class="fas fa-trash"></i>
+                        </a> |
+                        <a href="#" title="Hapus" class="mx-2  border-gray-300">
+                            <i class="fas fa-trash text-red-600"></i>
                         </a>
                     </p>
                     

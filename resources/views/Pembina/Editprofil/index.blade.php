@@ -5,14 +5,14 @@
 <form action="{{ route('updateProfilPembina') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PATCH')
-    <div class="sm:ml-36 ml-2 sm:mt-10 mt-2 ">
+    <div class="sm:ml-20 ml-2 sm:mt-16 mt-2 ">
         <div class="flex flex-col">
             <div class="flex flex-col w-11/12 justify-start mx-auto">
                 <p class="font-bold text-xl pb-2 md:pb-4 text-customBlack">Update data Pembina</p>
                 <p class="font-bold text-xl pb-4 text-customBlack ml-6">Foto Profil</p>
             </div>
             <div class="flex flex-row items-center justify-start mx-auto w-11/12">
-                <div class="w-28 md:w-40 h-28 md:h-40 rounded-full bg-gray-300 mb-4">
+                <div class="w-28 md:w-40 h-28 md:h-40 rounded-full border border-customBlack bg-gray-300 mb-4">
                     {{-- Menampilkan foto profil --}}
                     @if($profil && $profil->photo_pembina)
                         <img src="{{ asset($profil->photo_pembina) }}" alt="" class="w-full h-full rounded-full object-cover" style="width: 100%; height: 100%;">

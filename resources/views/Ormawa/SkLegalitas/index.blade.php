@@ -5,8 +5,8 @@
         <div class="flex items-center bg-customBlue text-white w-full h-20 shadow-lg">
             <p class="text-2xl md:text-2xl font-bold ml-4">Daftar SK Legalitas</p>
         </div>
-        <div class="bg-customWhite w-full shadow-md mt-2 border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customBlue text-white w-full shadow-md mt-2 border border-customBlack overflow-x-auto">
+            <div class="flex flex-row justify-between p-2 md:p-4 items-center">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nomor SK</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Tanggal Terbit</p>

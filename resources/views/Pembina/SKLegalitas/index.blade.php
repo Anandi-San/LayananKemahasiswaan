@@ -2,12 +2,12 @@
 <title>SK Legalitas</title>
 
 @section('content')
-    <div class="flex flex-col items-center justify-center  ml-4 md:ml-16 lg:ml-36 mr-4 mt-36">
-        <div class="flex items-center bg-blue-500 text-white w-full md:w-11/12 h-20 shadow-lg">
-            <p class="text-base md:text-lg font-bold ml-4">SK Legalitas</p>
+    <div class="flex flex-col items-center justify-center  ml-4 md:ml-16 lg:ml-20 mr-16 mt-16">
+        <div class="flex items-center bg-customBlue text-white w-full h-20">
+            <p class="text-2xl font-bold ml-4">SK Legalitas</p>
         </div>
-        <div class="bg-customWhite w-11/12 md:w-11/12 shadow-md mt-2 border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customBlue text-customWhite w-full mt-2 border border-customBlack h-16">
+            <div class="flex flex-row justify-between p-3 items-center h-full">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nama Ormawa</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nomor SK</p>
@@ -20,10 +20,9 @@
                 <p class="text-center w-36 text-xs md:text-sm mr-1">Operasi</p>
             </div>
         </div>
-        <div class="container bg-customWhite w-full md:w-11/12 ">
             @foreach ($skLegalitasData as $index => $data)
-            <div class="bg-customWhite w-full md:w-full border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+            <div class="bg-customWhite w-full md:w-full border h-16 border-customBlack overflow-x-auto">
+            <div class="flex flex-row justify-between p-3 h-full items-center">
                     <p class="text-center w-1/8 text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $data['nama_ormawa'] }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $data['nomor_sk'] }}</p>
@@ -33,7 +32,7 @@
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $data['file_sk'] }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">Lainnya</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">
-                        <span class="rounded-lg border px-2 py-1 bg-customBlack text-white">{{ $data['status'] }}</span></p>
+                        <span class="rounded-full border px-3 py-3 bg-red-600 text-white">{{ $data['status'] }}</span></p>
                     <p class="text-center w-36 text-xs md:text-xl mr-1">
                         <!-- Unduh dengan ikon -->
                         <a href='#' target="_blank" title="Unduh" class="mr-1">
@@ -46,7 +45,6 @@
                         </a>
                     </p>
                     @endforeach
-            </div>
             </div>
         </div>
     </div>

@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="flex flex-col items-center justify-center mt-12 ml-4 md:ml-16 lg:ml-20 mr-16">
-    <div class="flex items-center bg-blue-500 text-white w-full h-20 shadow-lg">
+    <div class="flex items-center bg-customBlue text-white w-full h-20 shadow-lg">
         <p class="text-base md:text-2xl font-bold ml-4">Daftar Kegiatan </p>
     </div>
-    <div class="bg-customWhite w-full mt-2 border border-customBlack overflow-x-auto">
+    <div class="bg-customBlue text-white w-full mt-2 border border-customBlack overflow-x-auto">
         <div class="flex flex-row justify-between p-2 md:p-4">
             <p class="text-center text-xs md:text-sm">#</p>
             <p class="text-center w-1/6 text-xs md:text-sm mr-1">Nama Kegiatan</p>
@@ -48,7 +48,7 @@
                 </a>
                 <a href="#" class="px-3 py-3 rounded-full bg-customBlue text-white flex items-center justify-center">
                     <i class="fas fa-download"></i>
-                    <span class="ml-2">Unduh</span>
+                    <span class="ml-2">Cek LPJ</span>
                 </a>
                 
             </div>

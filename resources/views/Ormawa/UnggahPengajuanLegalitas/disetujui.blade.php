@@ -6,7 +6,7 @@
 @section('content')
 <div class="flex flex-col items-center justify-center mt-12 ml-4 md:ml-16 lg:ml-20 mr-16">
     <div class="flex items-center bg-customBlue text-white w-full h-20 shadow-lg">
-        <p class="text-base md:text-lg font-bold ml-4">Daftar Pengajuan Legalitas</p>
+        <p class="text-2xl font-bold ml-4">Daftar Pengajuan Legalitas</p>
     </div>
     <div class="bg-customBlue w-full shadow-md mt-2 border border-gray-500 overflow-x-auto">
         <div class="flex flex-row justify-between p-2 md:p-4 text-white items-center">

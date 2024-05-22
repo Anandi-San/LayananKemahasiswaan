@@ -23,33 +23,34 @@
                 
                 <div class="flex-grow"></div>
                 
-                <a href="{{ route('Pembina.create') }}" class="flex items-center w-36 bg-customBlack rounded-lg px-4 py-2 cursor-pointer" onclick="handleAddButton()">
+                <a href="{{ route('Pembina.create') }}" class="flex items-center w-36 bg-green-500 rounded-lg px-4 py-2 cursor-pointer" onclick="handleAddButton()">
                     <i class="fas fa-plus text-customWhite mr-2"></i>
                     <span class="text-customWhite font-medium">Tambah</span>
                 </a>
             </div>
         </div>
 
-        <div class="bg-customBlue w-full md:w-full shadow-md border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4 text-white">
-                <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
-                <p class="text-center w-1/12 text-xs md:text-sm mr-1">Nama Pembina</p>
-                <p class="text-center w-1/12 text-xs md:text-sm mr-1">Ormawa</p>
-                <p class="text-center w-1/12 text-xs md:text-sm mr-1">Status</p>
-                <p class="text-center w-1/12 text-xs md:text-sm mr-1">Operasi</p>
+        <div class="bg-customBlue w-full md:w-full s border border-customBlack h-16 flex items-center">
+            <div class="flex flex-row justify-between p-3 w-full text-white">
+                <p class="text-center w-1/8 mr-1">#</p>
+                <p class="text-center w-1/12 mr-1">Nama Pembina</p>
+                <p class="text-center w-1/12 mr-1">Nama Ormawa</p>
+                <p class="text-center w-1/12 mr-1">Status</p>
+                <p class="text-center w-1/12 mr-1">Operasi</p>
             </div>
         </div>
 
         <div class="bg-customWhite w-full md:w-full">
             @foreach ($pembinaList as $index => $pembina)
-                <div class=" bg-customWhite w-full md:w-full shadow-md border border-customBlack overflow-x-auto">
-                    <div class="flex flex-row justify-between p-2 md:p-4">
+                <div class=" bg-customWhite w-full md:w-full border border-customBlack overflow-x-auto">
+                    <div class="flex flex-row justify-between p-3 items-center h-16 ">
                     <p class="text-center w-1/8 text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $pembina->nama_pembina }}</p>
                     @foreach($pembina->ormawaPembina as $ormawa)
                         <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $ormawa->ormawa->nama_ormawa }}</p>
                     @endforeach
-                    <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $pembina->status ?? 'aktif' }}</p>
+                    <p class="text-center w-1/12 text-xs md:text-sm text-customWhite">
+                        <span class="rounded-lg border px-3 py-3 bg-customBlue">{{ $pembina->status ?? 'aktif' }}</span></p>
                     <p class="text-center w-1/12 text-xs md:text-lg mr-1">
                         <!-- Ganti teks "Edit" dengan ikon pensil -->
                         <a href="{{ route('edit.Pembina', $pembina->id) }}" class="mr-2" title="Edit">

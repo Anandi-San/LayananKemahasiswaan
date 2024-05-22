@@ -2,9 +2,7 @@
     <div class="w-full max-w-screen-lg">
     <div id="{{$textareaContainer}}" class="w-full h-60 border border-customBlue p-4 rounded-lg ">
         <h3 class="text-lg font-semibold mb-2 ">{{$title}}</h3>
-        <textarea id="{{$kegiatanTextArea}}" name="{{$kegiatanTextArea}}" class="w-full h-4/6 mt-3  resize-none rounded-lg border border-customBlue">
-
-        </textarea>
+        <textarea id="{{$kegiatanTextArea}}" name="{{$kegiatanTextArea}}" class="w-full h-4/6 mt-3  resize-none rounded-lg border border-customBlue"></textarea>
     </div>
     </div>
 </div>

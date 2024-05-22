@@ -4,12 +4,12 @@
 @section('content')
     @extends('Pembina.Components.stepper')
 
-    <div class="flex flex-col items-center justify-center my-8 ml-4 md:ml-16 lg:ml-36 mr-4">
-        <div class="flex items-center bg-blue-500 text-white w-full md:w-9/12 h-20 shadow-lg">
-            <p class="text-base md:text-lg font-bold ml-4">LPJ Kegiatan</p>
+    <div class="flex flex-col items-center justify-center my-8 ml-4 md:ml-16 lg:ml-20 mr-16">
+        <div class="flex items-center bg-customBlue text-white w-full h-20 shadow-lg">
+            <p class="text-2xl font-bold ml-4">LPJ Kegiatan</p>
         </div>
-        <div class="bg-customWhite w-full md:w-9/12 shadow-md mt-2 border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customBlue text-white w-full shadow-md mt-2 border border-customBlack h-16">
+            <div class="flex flex-row justify-between p-2 md:p-4 items-center h-full">
                 <p class="text-center w-1/8 text-xs md:text-sm mr-1">#</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Sampul Depan</p>
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Lampiran 1</p>
@@ -21,8 +21,8 @@
                 <p class="text-center w-1/12 text-xs md:text-sm mr-1">Operasi</p>    
             </div>
         </div>
-        <div class="bg-customWhite w-full md:w-9/12 shadow-md border border-customBlack overflow-x-auto">
-            <div class="flex flex-row justify-between p-2 md:p-4">
+        <div class="bg-customWhite w-full shadow-md border  border-customBlack overflow-x-auto">
+            <div class="flex flex-row justify-between p-3 items-center">
                 @foreach ($lpjKegiatanData as $index => $lpjKegiatan)
                     <p class="text-center w-1/8  text-xs md:text-sm mr-1">{{ $index + 1 }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $lpjKegiatan['sampul_depan'] }}</p>
@@ -31,15 +31,18 @@
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $lpjKegiatan['lampiran3'] }}</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">Lainnya</p>
                     <p class="text-center w-1/12 text-xs md:text-sm mr-1">{{ $lpjKegiatan['sampul_belakang'] }}</p>
-                    <p class="text-center w-1/12  text-xs md:text-sm mr-1">{{ $lpjKegiatan->status }}</p>
-                    <p class="text-center w-1/12 text-xs md:text-sm mr-1">
+                    <p class="text-center w-1/12  text-xs md:text-sm mr-1">
+                        <span class="rounded-full px-3 py-3 border bg-red-600 text-customWhite inline-block min-w-min max-w-full">
+                            {{ $lpjKegiatan->status }}
+                        </span></p>
+                    <p class="text-center w-1/12 text-xs md:text-xl mr-1 space-x-2">
                         <!-- Unduh dengan ikon -->
                         <a href='#' target="_blank" title="Unduh" class="mx-2">
                             <i class="fas fa-download"></i>
                         </a>
-                        
+                        <a >|</a>
                         <!-- Hapus dengan ikon -->
-                        <a href="#" title="Hapus" class="mx-2 border-l pl-2 border-gray-300">
+                        <a href="#" title="Hapus">
                             <i class="fas fa-trash"></i>
                         </a>
                     </p>               

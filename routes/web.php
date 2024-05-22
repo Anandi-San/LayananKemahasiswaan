@@ -172,6 +172,8 @@ Route::prefix('/kemahasiswaan')->middleware('auth')->group(function () {
     Route::resource('/laporanakhir', laporanAKhirController::class);
 });
 
+
+
 Route::prefix('/superadmin')->middleware('auth')->group(function () {
     Route::get('/beranda', [BerandaSuperAdminController::class, 'index'])->name('superadmin');
     Route::get('/profil-kemahasiswaan', [EditKemahasiswaanController::class, 'index'])->name('profil.kemahasiswaan');

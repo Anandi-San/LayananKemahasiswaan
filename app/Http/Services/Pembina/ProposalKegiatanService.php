@@ -15,6 +15,7 @@ class ProposalKegiatanService {
         
         // Temukan Pembina yang terkait dengan pengguna yang login
         $pembina = Pembina::where('id_pengguna', $user->id)->first();
+        // dd($pembina);
         
         // Periksa apakah Pembina ditemukan
         if (!$pembina) {
@@ -23,6 +24,7 @@ class ProposalKegiatanService {
         
         // Ambil daftar OrmawaPembina yang terkait dengan Pembina
         $ormawaPembinaList = $pembina->ormawaPembina;
+        // dd($ormawaPembinaList);
     
         // Array untuk menampung data Proposal_Kegiatan
         $proposalKegiatanData = [];
@@ -48,21 +50,17 @@ class ProposalKegiatanService {
                 }
             }
         }
+        // dd($proposalKegiatanData);
     
         // Periksa apakah array proposal kegiatan kosong
         if (empty($proposalKegiatanData)) {
             return view('Pembina.ProposalKegiatan.nothing');
         }
+        // dd($proposalKegiatanData);
     
         // Kembalikan data Proposal Kegiatan ke view
         return view('Pembina.ProposalKegiatan.index', ['proposalKegiatanData' => $proposalKegiatanData]);
     }
-    
-
-
-    
-
-    
 
 
     public function Revisi()
